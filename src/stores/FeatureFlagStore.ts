@@ -1,6 +1,7 @@
 import {FeatureFlag} from "../types/featureFlag.ts";
 import {makeAutoObservable, runInAction} from "mobx";
 import {APIClient} from "../api/APIClient.ts";
+import userStore from "./UserStore.ts"
 
 class FeatureFlagStore {
     flags: FeatureFlag[] = [];
@@ -11,9 +12,17 @@ class FeatureFlagStore {
         makeAutoObservable(this);
     }
 
-    async loadFlags() {
+    private startLoading(): void {
         this.isLoading = true;
         this.error = null;
+    }
+
+    private stopLoading(): void {
+        this.isLoading = false;
+    }
+
+    async loadFlags() {
+        this.startLoading();
 
         try {
             const data = await APIClient.getFlags();
@@ -27,60 +36,59 @@ class FeatureFlagStore {
         }
         finally {
             runInAction(() => {
-                this.isLoading = false;
+                this.stopLoading();
             });
         }
     }
 
-    async createNew(newFlag: FeatureFlag) {
-        this.isLoading = true;
-        this.error = null;
+    async createNew(newFlag: {name: string, description: string,
+        env: string, status: string}) {
+        this.startLoading();
 
         try {
-            const data = await APIClient.createNewFlag(newFlag);
-            runInAction(() => {
-                if (data === true) {
-                    this.flags.push(newFlag);
-                }
-            });
+            if (userStore.currentUser) {
+                const owner = userStore.currentUser.id;
+                const data = await APIClient.createNewFlag(newFlag, owner);
+                runInAction(() => {
+                    this.flags.push(data);
+                });
+            }
         } catch (e) {
             runInAction(() => {
-                this.error = "Не удалось загрузить флаги, попробуйте позже";
+                this.error = "Не удалось создать флаг, попробуйте позже";
             });
         }
         finally {
             runInAction(() => {
-                this.isLoading = false;
+                this.stopLoading();
             });
         }
     }
 
     async update(id: string, changes: Partial<FeatureFlag>) {
-        this.isLoading = true;
-        this.error = null;
+        this.startLoading();
 
         try {
             const data = await APIClient.updateFlag(id, changes);
             runInAction(() => {
-                this.flags = this.flags.
-                filter(item => item.id !== id);
-                this.flags.push(data);
+                var index = this.flags.
+                findIndex(item => item.id === id);
+                if (index !== -1) this.flags[index] = data;
             });
         } catch (e) {
             runInAction(() => {
-                this.error = "Не удалось загрузить флаги, попробуйте позже";
+                this.error = "Не удалось обновить флаг, попробуйте позже";
             });
         }
         finally {
             runInAction(() => {
-                this.isLoading = false;
+                this.stopLoading();
             });
         }
     }
 
     async turn(id: string, turnOff: boolean) {
-        this.isLoading = true;
-        this.error = null;
+        this.startLoading();
 
         try {
             await APIClient.turnFlag(id, turnOff);
@@ -88,17 +96,19 @@ class FeatureFlagStore {
                 const currentFlag= this.flags.
                 find(item => item.id === id);
 
-                currentFlag?.status = currentFlag?.status === "enabled" ?
-                    "disabled" : "enabled";
+                if (currentFlag) {
+                    currentFlag.status = turnOff ?
+                        "disabled" : "enabled";
+                }
             });
         } catch (e) {
             runInAction(() => {
-                this.error = "Не удалось загрузить флаги, попробуйте позже";
+                this.error = `Не удалось ${turnOff ? "выключить" : "включить"} флаг, попробуйте позже`;
             });
         }
         finally {
             runInAction(() => {
-                this.isLoading = false;
+                this.stopLoading();
             });
         }
     }

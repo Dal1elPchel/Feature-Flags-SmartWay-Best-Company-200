@@ -1,4 +1,5 @@
 import {FeatureFlag} from "../types/featureFlag.ts";
+import {User} from "../types/user.ts";
 
 export class APIClient {
     private static baseURL: string = "https://api";
@@ -20,9 +21,9 @@ export class APIClient {
         ];
     }
 
-    static async createNewFlag(newFlag: FeatureFlag): Promise<boolean> {
+    static async createNewFlag(newFlag: {name: string, description: string,
+    env: string, status: string}, owner: string): Promise<FeatureFlag> {
         throw new Error("не сделано");
-        // если статус 200 вернуть true
     }
 
     static async updateFlag(id: string, changes: Partial<FeatureFlag>): Promise<FeatureFlag> {
@@ -33,7 +34,7 @@ export class APIClient {
         throw new Error("не сделано");
     }
 
-    static async login(email: string, password: string): Promise<void> {
+    static async login(email: string, password: string): Promise<User> {
         throw new Error("не сделано");
     }
 }
