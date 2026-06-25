@@ -1,0 +1,28 @@
+.Button {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  padding: 10px 25px;
+  gap: 12px;
+  border-radius: 10px;
+  transition: .15s ease-in-out;
+  background-color: var(--color-bg-page);
+  border: 1px   solid var(--color-text-light);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  font-weight: normal;
+  white-space: normal;
+  text-align: center;
+  max-width: 250px;
+}
+
+
+.Button:hover {
+  transform: scale(1.15);
+}
+
+.accent {
+  background-color: var(--color-accent);
+  border: 2px solid var(--color-accent-hover);
+  color: var(--color-text-on-dark);
+}
