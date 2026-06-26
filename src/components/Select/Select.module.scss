@@ -1,0 +1,22 @@
+.select {
+  width: 100%;
+  border: 1px solid var(--color-text-light);
+  border-radius: 15px;
+  padding: 12px 8px;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-base);
+  font-family: var(--font-family-base);
+  background-color: var(--color-bg-card);
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-accent);
+  }
+
+  &:disabled {
+    background-color: var(--color-border);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}
