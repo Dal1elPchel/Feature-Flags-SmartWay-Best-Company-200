@@ -5,6 +5,7 @@ import {useForm} from "react-hook-form";
 import Input from "../../components/Input/Input.tsx";
 import Button from "../../components/Button/Button.tsx";
 import {AlertCircle} from "lucide-react";
+import {useNavigate} from "react-router-dom";
 
 interface FormData {
     email: string;
@@ -13,9 +14,12 @@ interface FormData {
 
 const LoginPage = observer(() => {
     const {register, handleSubmit, formState: {errors}} = useForm<FormData>();
+    const navigate = useNavigate();
 
     const onSubmit = async (data: FormData) => {
         await userStore.loginUser(data.email, data.password);
+
+        if (userStore.isAuth) navigate("/");
     }
 
     return (
