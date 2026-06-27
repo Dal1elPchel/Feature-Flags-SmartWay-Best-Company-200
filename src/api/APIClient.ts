@@ -35,6 +35,13 @@ export class APIClient {
     }
 
     static async login(email: string, password: string): Promise<User> {
-        throw new Error("не сделано");
+        await new Promise((resolve) => setTimeout(resolve, 500)); // имитация задержки сети
+
+        return {
+            id: "1",
+            name: "Алексей",
+            surname: "Кузнецов",
+            email: email,
+        };
     }
 }
