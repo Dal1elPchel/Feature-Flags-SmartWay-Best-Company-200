@@ -35,6 +35,15 @@ class UserStore {
             runInAction(() => this.loading = false);
         }
     }
+
+    logout(): void {
+        this.currentUser = null;
+        localStorage.removeItem("user");
+    }
+
+    get isAuth() {
+        return this.currentUser !== null;
+    }
 }
 
 export default new UserStore();
