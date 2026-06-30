@@ -1,29 +1,23 @@
 import styles from "./Textarea.module.scss";
+import {forwardRef, TextareaHTMLAttributes} from "react";
 
-interface TextareaProps {
-    name: string;
-    placeHolder: string;
-    value?: string;
-    onChange: (value: string) => void;
-    isRequired: boolean;
+
+interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>{
     rows?: number;
-    maxLength?:number;
+    maxLength?: number;
 }
 
-const Textarea = ({name, placeHolder, value = "",
-                   onChange = () => {}, isRequired = true,
-               rows = 5, maxLength = 120}: TextareaProps) => {
+const Textarea =
+    forwardRef<HTMLTextAreaElement, TextareaProps>(({
+               rows = 5, maxLength = 120, ...rest}, ref) => {
     return (
         <textarea className={styles.textarea}
-               name={name}
-               id={name}
-               placeholder={placeHolder}
-               value={value}
-               required={isRequired}
-               onChange={(e) => onChange(e.target.value)}
+               ref={ref}
                rows={rows}
-               maxLength={maxLength}/>
+               maxLength={maxLength}
+               {...rest}
+        />
     );
-}
+});
 
 export default Textarea;

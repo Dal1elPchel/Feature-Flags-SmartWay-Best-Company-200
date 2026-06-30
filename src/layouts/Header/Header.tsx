@@ -4,7 +4,6 @@ import {ChevronDown, ChevronUp} from "lucide-react";
 import {useState} from "react";
 import Button from "../../components/Button/Button.tsx";
 import userStore from "../../stores/UserStore.ts";
-import {Link} from "react-router-dom";
 
 
 const Header = observer(() => {
@@ -20,9 +19,7 @@ const Header = observer(() => {
     return (
         <header className={styles.header}>
             <nav className={styles.nav}>
-                <a><Link to={'/'}>Флаги</Link></a>
-                <span>/</span>
-                <span>betaProfile</span>
+
             </nav>
 
             <div className={styles.userWrapper}>

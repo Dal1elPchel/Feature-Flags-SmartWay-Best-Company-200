@@ -1,32 +1,21 @@
 import styles from "./Select.module.scss";
+import {forwardRef, SelectHTMLAttributes} from "react";
 
 interface SelectOptions {
     value: string;
     label: string;
 }
 
-interface SelectProps {
-    name: string;
+interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement>{
     options: SelectOptions[];
-    value: string;
-    onChange: (value: string) => void;
-    placeholder?: string;
-    isRequired?: boolean;
 }
 
-const Select = ({name, options, value,
-                onChange, placeholder = "Выберите вариант", isRequired = true}: SelectProps) => {
+const Select = forwardRef<HTMLSelectElement, SelectProps>
+(({options, ...rest}, ref) => {
     return (
         <select className={styles.select}
-        name={name}
-        id={name}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        required={isRequired}>
-            {placeholder && (
-                <option value="" disabled>{placeholder}</option>
-            )}
-
+        ref={ref}
+        {...rest}>
             {options.map(item => (
                 <option key={item.value} value={item.value}>
                     {item.label}
@@ -34,6 +23,6 @@ const Select = ({name, options, value,
             ))}
         </select>
     );
-};
+});
 
 export default Select;

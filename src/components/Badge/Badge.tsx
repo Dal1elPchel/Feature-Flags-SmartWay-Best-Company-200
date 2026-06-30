@@ -1,7 +1,7 @@
 import styles from "./Badge.module.scss";
 
 interface BadgeProps {
-    text: "dev" | "staging" | "production" | "enabled" | "disabled";
+    text: "development" | "staging" | "production" | "enabled" | "disabled";
 }
 
 const BadgeComponent =

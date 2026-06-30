@@ -12,9 +12,16 @@ class UserStore {
         this.restoreUser();
     }
 
-    private restoreUser() {
-        const savedUser = localStorage.getItem("user");
-        if (savedUser) this.currentUser = JSON.parse(savedUser);
+    private async restoreUser() {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+
+        try {
+            const user = await APIClient.getMe();
+            runInAction(() => this.currentUser = user);
+        } catch {
+            localStorage.removeItem("token"); // токен мёртв — чистим
+        }
     }
 
     async loginUser(email: string, password: string) {
@@ -22,15 +29,17 @@ class UserStore {
         this.error = null;
 
         try {
-            const data = await APIClient.login(email, password);
+            const token = await APIClient.login(email, password);
+            localStorage.setItem("token", token);
+
+            const data = await APIClient.getMe();
             runInAction(() => {
                 this.currentUser = data;
             });
 
-            localStorage.setItem("user", JSON.stringify(this.currentUser));
-
         } catch (e) {
-            runInAction(() => this.error = "Не удалось войти в систему.");
+            runInAction(() => this.error =
+                e instanceof Error ? e.message : "Не удалось войти в систему.");
         } finally {
             runInAction(() => this.loading = false);
         }
@@ -38,7 +47,7 @@ class UserStore {
 
     logout(): void {
         this.currentUser = null;
-        localStorage.removeItem("user");
+        localStorage.removeItem("token");
     }
 
     get isAuth() {

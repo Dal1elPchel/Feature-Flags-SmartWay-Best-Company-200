@@ -31,11 +31,11 @@ const Modal = ({title, infoText, optionText, onClose, onConfirm}: ModalProps) =>
                 )}
 
                 <div className={styles.modalButtons}>
-                    <Button text={"Отмена"} isAccent={false} onClick={onClose}/>
+                    <Button text={"Отмена"} isAccent={false} isSubmit={false} onClick={onClose}/>
                     <Button text={<>
                         <PowerIcon/>
                         Подтвердить
-                    </>} isAccent={true}
+                    </>} isSubmit={false} isAccent={true}
                     onClick={onConfirm}/>
                 </div>
             </div>

@@ -1,0 +1,115 @@
+.section {
+  position: absolute;
+  right: 0;
+  top: 80px;
+  width: 85%;
+  padding: 50px;
+  display: flex;
+  gap: 10px;
+  flex-direction: column;
+}
+
+.title {
+  font-weight: 700;
+  line-height: 1.2;
+  font-size: var(--font-size-lg);
+  color: var(--color-text-primary);
+}
+
+.subtitle {
+  font-weight: normal;
+  font-size: var(--font-size-md);
+  color: var(--color-text-secondary);
+}
+
+.formContainer {
+  padding: 15px;
+  background-color: var(--color-bg-card);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  width: 100%;
+
+  form {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 15px;
+
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+}
+
+.buttonManager {
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 1px solid color-mix(
+          in srgb,
+          var(--color-text-secondary) 40%,
+          transparent
+  );
+
+  display: flex;
+  justify-content: flex-end;
+  gap: 25px;
+}
+
+.errorText {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+
+  svg {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+  }
+}
+
+.buttonPrev {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  transition: .15s ease-in-out;
+
+  &:hover {
+    transform: scale(1.05);
+  }
+}
+
+.containerTitle {
+  margin-left: 5%;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: var(--font-size-lg);
+}
+
+.infoMessage {
+  position: absolute;
+  top: 80px;
+  right: 0;
+  width: 85%;
+  padding: 50px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  min-height: 300px;
+
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text-secondary);
+
+  background-color: var(--color-bg-card);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+}
