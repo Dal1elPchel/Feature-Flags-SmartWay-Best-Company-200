@@ -1,10 +1,10 @@
 import {FeatureFlag} from "../types/featureFlag.ts";
 import {makeAutoObservable, runInAction} from "mobx";
 import {APIClient} from "../api/APIClient.ts";
-import userStore from "./UserStore.ts"
 
 class FeatureFlagStore {
     flags: FeatureFlag[] = [];
+    currentFlag: FeatureFlag | null = null;
     isLoading: boolean = false;
     error: string | null = null;
 
@@ -31,7 +31,7 @@ class FeatureFlagStore {
             });
         } catch (e) {
             runInAction(() => {
-                this.error = "Не удалось загрузить флаги, попробуйте позже";
+                this.error = e instanceof Error ? e.message : "Не удалось загрузить флаги, попробуйте позже";
             });
         }
         finally {
@@ -41,21 +41,22 @@ class FeatureFlagStore {
         }
     }
 
-    async createNew(newFlag: {name: string, description: string,
-        env: string, status: string}) {
+    async loadFlag(id: string) {
         this.startLoading();
 
         try {
-            if (userStore.currentUser) {
-                const owner = userStore.currentUser.id;
-                const data = await APIClient.createNewFlag(newFlag, owner);
+            if (this.flags.length === 0) {
+                const data = await APIClient.getFlags();
                 runInAction(() => {
-                    this.flags.push(data);
+                    this.flags = data;
                 });
             }
+            runInAction(() => {
+                this.currentFlag = this.flags.find(f => f.id === id) ?? null;
+            });
         } catch (e) {
             runInAction(() => {
-                this.error = "Не удалось создать флаг, попробуйте позже";
+                this.error = e instanceof Error ? e.message : "Не удалось загрузить флаг, попробуйте позже";
             });
         }
         finally {
@@ -65,19 +66,48 @@ class FeatureFlagStore {
         }
     }
 
-    async update(id: string, changes: Partial<FeatureFlag>) {
+    async createNew(newFlag: {
+        name: string,
+        description: string,
+        status: string,
+        environment: string}) {
         this.startLoading();
 
         try {
-            const data = await APIClient.updateFlag(id, changes);
+            const id = await APIClient.createNewFlag(newFlag);
+            const data = await APIClient.getFlags();
             runInAction(() => {
-                var index = this.flags.
-                findIndex(item => item.id === id);
-                if (index !== -1) this.flags[index] = data;
+                this.flags = data;
+            });
+            return id;
+        } catch (e) {
+            runInAction(() => {
+                this.error = e instanceof Error ? e.message : "Не удалось создать флаг, попробуйте позже";
+            });
+        }
+        finally {
+            runInAction(() => {
+                this.stopLoading();
+            });
+        }
+    }
+
+    async update(id: string, changes: {
+        name: string,
+        description: string,
+        environment: string
+    }) {
+        this.startLoading();
+
+        try {
+            await APIClient.updateFlag(id, changes);
+            const data = await APIClient.getFlags();
+            runInAction(() => {
+                this.flags = data;
             });
         } catch (e) {
             runInAction(() => {
-                this.error = "Не удалось обновить флаг, попробуйте позже";
+                this.error = e instanceof Error ? e.message : "Не удалось обновить флаг, попробуйте позже";
             });
         }
         finally {
@@ -103,7 +133,7 @@ class FeatureFlagStore {
             });
         } catch (e) {
             runInAction(() => {
-                this.error = `Не удалось ${turnOff ? "выключить" : "включить"} флаг, попробуйте позже`;
+                this.error = e instanceof Error ? e.message : `Не удалось ${turnOff ? "выключить" : "включить"} флаг, попробуйте позже`;
             });
         }
         finally {
