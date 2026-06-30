@@ -1,0 +1,42 @@
+.flagCard {
+  width: 90%;
+  margin: auto;
+}
+
+.cardRow {
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  align-items: center;
+  padding: 16px 0;
+  color: var(--color-text-secondary);
+
+  &:not(:last-child) {
+    border-bottom: 1px solid var(--color-text-secondary);
+  }
+}
+
+dd {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  color: var(--color-text-primary);
+}
+
+span:last-child {
+  color: var(--color-text-secondary)
+}
+
+button {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  transition: .15s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+
+  &:hover {
+    transform: scale(1.02);
+    color: var(--color-text-primary);
+  }
+}
