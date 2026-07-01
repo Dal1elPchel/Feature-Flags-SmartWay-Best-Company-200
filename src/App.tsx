@@ -5,6 +5,7 @@ import MainLayout from "./layouts/MainLayout/MainLayout.tsx";
 import AddPage from "./pages/AddPage/AddPage.tsx";
 import TablePage from "./pages/TablePage/TablePage.tsx";
 import FlagCardPage from "./pages/FlagCardPage/FlagCardPage.tsx";
+import EditPage from "./pages/EditPage/EditPage.tsx";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
                     <Route path={"/"} element={<TablePage/>}/>
                     <Route path={"/add"} element={<AddPage/>}/>
                     <Route path={"/flags/:id"} element={<FlagCardPage/>}/>
+                    <Route path={"/flags/:id/edit"} element={<EditPage/>}/>
                 </Route>
             </Route>
         </Routes>
