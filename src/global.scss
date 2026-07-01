@@ -38,17 +38,28 @@ ul, ol {
   --color-text-light: #9ca3af;
   --color-text-on-dark: #d1d5db;
 
-  --color-accent: #df4040;
-  --color-accent-hover: #cd2525;
-
-  --color-success: #10b981;
-  --color-success-bg: #d1fae5;
+  --color-accent: #d55858;
+  --color-accent-hover: #cc0e0e;
 
   --color-warning: #f97316;
   --color-warning-bg: #fad7ac;
 
   --color-border: #e5e7eb;
   --color-border-dark: #2d2d35;
+
+  /* Success */
+  --color-success: #10b981;
+  --color-success-hover: #059669;
+  --color-success-text: #065f46;
+  --color-success-bg: rgba(16, 185, 129, 0.12);
+  --color-success-border: rgba(16, 185, 129, 0.25);
+
+  /* Error */
+  --color-error: #d55858;
+  --color-error-hover: #cc0e0e;
+  --color-error-text: #991b1b;
+  --color-error-bg: rgba(213, 88, 88, 0.12);
+  --color-error-border: rgba(213, 88, 88, 0.25);
 
   --font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 
