@@ -8,6 +8,7 @@ import {useEffect, useState} from "react";
 import {observer} from "mobx-react-lite";
 import ProductionWarning from "../../components/ProductionWarning/ProductionWarning.tsx";
 import Modal from "../../components/Modal/Modal.tsx";
+import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
 
 
 const FlagCardPage = observer(() => {
@@ -22,15 +23,11 @@ const FlagCardPage = observer(() => {
         }
     }, [id]);
 
-
-    if (featureFlagStore.isLoading) {
-        return <div className={styles.infoMessage}>Загрузка флага...</div>
-    }
-
     const currentFlag = featureFlagStore.currentFlag;
 
     if (!currentFlag) {
-        return <div className={styles.infoMessage}>Флаг не найден</div>;
+        return <InfoMessage message={"Флаг не найден, попробуйте позже!"} status={"error"}
+                            onClose={() => {navigate("/")}}/>
     }
 
     const turnFlag = () => {
@@ -39,9 +36,22 @@ const FlagCardPage = observer(() => {
         setIsModalOpen(false);
     }
 
+    const EditClick = () => {
+        navigate(`/flags/${currentFlag.id}/edit`)
+    }
+
     return (
         <>
         <section className={styles.section}>
+            {featureFlagStore.error && (
+                <InfoMessage message={featureFlagStore.error}
+                             status={"error"}
+                             onClose={() => {featureFlagStore.setErrorNull()}}/>
+            )}
+
+            {featureFlagStore.isLoading && (
+                <InfoMessage message={"Загрузка, пожалуйста подождите..."} status={"loading"}/>
+            )}
             <div className={styles.title}>Карточка</div>
             <div className={styles.subtitle}>
                 <button className={styles.buttonPrev}
@@ -59,6 +69,7 @@ const FlagCardPage = observer(() => {
                         text={"Редактировать"}
                         isAccent={false}
                         isSubmit={false}
+                        onClick={EditClick}
                     />
                     <Button
                         text={currentFlag.status === "enabled" ? "Выключить" : "Включить"}

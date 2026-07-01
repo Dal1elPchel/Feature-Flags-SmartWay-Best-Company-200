@@ -8,6 +8,8 @@ import Select from "../../components/Select/Select.tsx";
 import {FlagEnvironment, FlagStatus} from "../../types/featureFlag.ts";
 import Button from "../../components/Button/Button.tsx";
 import {useNavigate} from "react-router-dom";
+import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
+import {observer} from "mobx-react-lite";
 
 interface FormData {
     name: string;
@@ -27,7 +29,7 @@ const statusVariants: {value: FlagStatus, label: string}[] = [
     {value: "disabled", label: "disabled"}
 ];
 
-const AddPage = () => {
+const AddPage = observer(() => {
     const {register, handleSubmit, formState: {errors}} = useForm<FormData>();
     const navigate = useNavigate();
 
@@ -39,6 +41,10 @@ const AddPage = () => {
             environment: data.environment
         };
         await featureFlagStore.createNew(newFlag);
+
+        if (!featureFlagStore.error && !featureFlagStore.isLoading) {
+            navigate("/");
+        }
     }
 
     const onClose = () => {
@@ -47,6 +53,17 @@ const AddPage = () => {
 
     return (
         <section className={styles.section}>
+
+            {featureFlagStore.error && (
+                <InfoMessage message={featureFlagStore.error}
+                             status={"error"}
+                onClose={() => {featureFlagStore.setErrorNull()}}/>
+            )}
+
+            {featureFlagStore.isLoading && (
+                <InfoMessage message={"Загрузка, пожалуйста подождите..."} status={"loading"}/>
+            )}
+
             <div className={styles.title}>Создать feature flag</div>
             <div className={styles.subtitle}>Новая запись флага</div>
             <div className={styles.formContainer}>
@@ -149,6 +166,6 @@ const AddPage = () => {
             </div>
         </section>
     );
-}
+});
 
 export default AddPage;

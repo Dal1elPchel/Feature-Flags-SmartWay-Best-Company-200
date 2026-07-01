@@ -7,6 +7,7 @@ import {observer} from "mobx-react-lite";
 import featureFlagStore from "../../stores/FeatureFlagStore.ts";
 import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
 
 const TablePage = observer(() => {
 
@@ -70,9 +71,23 @@ const TablePage = observer(() => {
     const flags = featureFlagStore.flags;
     return (
         <section className={styles.section}>
-            <div className={styles.title}>Feature flags</div>
-            <div className={styles.subtitle}>Система управления флагами</div>
-            <Table data={flags} columns={columns} pageSize={6} />
+            {featureFlagStore.error && (
+                <InfoMessage message={featureFlagStore.error}
+                             status={"error"}
+                             onClose={() => {featureFlagStore.setErrorNull()}}/>
+            )}
+
+            {featureFlagStore.isLoading && (
+                <InfoMessage message={"Загрузка, пожалуйста подождите..."} status={"loading"}/>
+            )}
+
+            {(!featureFlagStore.error && !featureFlagStore.isLoading) && (
+                <>
+                    <div className={styles.title}>Feature flags</div>
+                    <div className={styles.subtitle}>Система управления флагами</div>
+                    <Table data={flags} columns={columns} pageSize={6} />
+                </>
+            )}
         </section>
     );
 });

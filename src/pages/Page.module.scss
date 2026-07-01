@@ -91,25 +91,3 @@
   font-weight: 700;
   font-size: var(--font-size-lg);
 }
-
-.infoMessage {
-  position: absolute;
-  top: 80px;
-  right: 0;
-  width: 85%;
-  padding: 50px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  min-height: 300px;
-
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text-secondary);
-
-  background-color: var(--color-bg-card);
-  border-radius: 20px;
-  box-shadow: var(--shadow-card);
-}
