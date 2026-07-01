@@ -1,4 +1,4 @@
-import {FeatureFlag} from "../types/featureFlag.ts";
+import {FeatureFlag, FlagEnvironment, FlagStatus} from "../types/featureFlag.ts";
 import {makeAutoObservable, runInAction} from "mobx";
 import {APIClient} from "../api/APIClient.ts";
 
@@ -95,7 +95,8 @@ class FeatureFlagStore {
     async update(id: string, changes: {
         name: string,
         description: string,
-        environment: string
+        environment: FlagEnvironment,
+        status: FlagStatus
     }) {
         this.startLoading();
 
@@ -141,6 +142,10 @@ class FeatureFlagStore {
                 this.stopLoading();
             });
         }
+    }
+
+    setErrorNull () {
+        this.error = null;
     }
 }
 
