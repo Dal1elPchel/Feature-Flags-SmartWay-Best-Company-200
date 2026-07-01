@@ -9,6 +9,7 @@ import {observer} from "mobx-react-lite";
 import ProductionWarning from "../../components/ProductionWarning/ProductionWarning.tsx";
 import Modal from "../../components/Modal/Modal.tsx";
 import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
+import userStore from "../../stores/UserStore.ts";
 
 
 const FlagCardPage = observer(() => {
@@ -40,6 +41,8 @@ const FlagCardPage = observer(() => {
         navigate(`/flags/${currentFlag.id}/edit`)
     }
 
+    const canUserEdit = userStore.currentUser?.command === currentFlag.owner;
+
     return (
         <>
         <section className={styles.section}>
@@ -65,17 +68,23 @@ const FlagCardPage = observer(() => {
                 <h1 className={styles.containerTitle}>{currentFlag.name}</h1>
                 <FlagList flag={currentFlag}/>
                 <div className={styles.buttonManager}>
+                    {!canUserEdit && (
+                        <span>Вы не можете редактировать флаг,
+                            команда флага и ваша команда не совпадают!</span>
+                    )}
                     <Button
                         text={"Редактировать"}
                         isAccent={false}
                         isSubmit={false}
                         onClick={EditClick}
+                        isDisabled={!canUserEdit}
                     />
                     <Button
                         text={currentFlag.status === "enabled" ? "Выключить" : "Включить"}
                         isSubmit={false}
                         isAccent={true}
                         onClick={() => {setIsModalOpen(true)}}
+                        isDisabled={!canUserEdit}
                     />
                 </div>
             </div>
