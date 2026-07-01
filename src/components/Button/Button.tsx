@@ -7,10 +7,11 @@ interface ButtonProps {
     onClick?: () => void;
     isSubmit: boolean;
     className?: string;
+    isDisabled?: boolean;
 }
 
 const Button =
-    ({text, isAccent, onClick, isSubmit, className}: ButtonProps) =>
+    ({text, isAccent, onClick, isSubmit, className, isDisabled}: ButtonProps) =>
     {
         const styleList = [styles.Button];
         if (isAccent) styleList.push(styles.accent);
@@ -18,7 +19,7 @@ const Button =
 
         return (
             <button type={ isSubmit ? "submit" : "button"} className={styleList.join(" ")}
-            onClick={onClick}>{text}</button>
+            onClick={onClick} disabled={isDisabled ? isDisabled : false}>{text}</button>
         );
 }
 
