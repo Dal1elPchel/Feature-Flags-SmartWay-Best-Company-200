@@ -1,9 +1,9 @@
-import {FeatureFlag} from "../types/featureFlag.ts";
+import {FeatureFlag, FlagEnvironment, FlagStatus} from "../types/featureFlag.ts";
 import {User} from "../types/user.ts";
 import {authUser, createdFlag, mockFlags, ttoken} from "./mokData.tsx";
 
 export class APIClient {
-    private static baseURL: string = "https://api";
+    private static baseURL: string = "https://localhost:8080";
 
     private static getAuthHeaders(): HeadersInit {
         const token = localStorage.getItem("token");
@@ -20,6 +20,9 @@ export class APIClient {
         //         method: "GET",
         //         headers: this.getAuthHeaders()
         //     });
+        // const data = response.json();
+        //
+        // const flags: FeatureFlag[] = data.map();
 
         return mockFlags;
     }
@@ -54,8 +57,6 @@ export class APIClient {
         //             throw new Error('Флаг с таким именем уже существует');
         //         case 422:
         //             throw new Error('Некорректные данные флага');
-        //         case 429:
-        //             throw new Error('Слишком много попыток, попробуйте позже');
         //         case 500:
         //         case 502:
         //         case 503:
@@ -68,12 +69,14 @@ export class APIClient {
         // const data = await response.json();
 
         return createdFlag.id;
+
     }
 
     static async updateFlag(id: string, changes: {
         name: string,
         description: string,
-        environment: string}
+        environment: FlagEnvironment,
+        status: FlagStatus}
         ): Promise<void> {
 
         //const response = await fetch(`${this.baseURL}/flags${id}`,
@@ -173,12 +176,8 @@ export class APIClient {
         //             throw new Error('Неверный формат данных');
         //         case 401:
         //             throw new Error('Неверный email или пароль');
-        //         case 403:
-        //             throw new Error('Доступ запрещён');
         //         case 404:
         //             throw new Error('Пользователь не найден');
-        //         case 429:
-        //             throw new Error('Слишком много попыток, попробуйте позже');
         //         case 500:
         //         case 502:
         //         case 503:
