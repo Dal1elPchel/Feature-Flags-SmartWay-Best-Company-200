@@ -45,14 +45,9 @@ class FeatureFlagStore {
         this.startLoading();
 
         try {
-            if (this.flags.length === 0) {
-                const data = await APIClient.getFlags();
-                runInAction(() => {
-                    this.flags = data;
-                });
-            }
+            const data = await APIClient.getFlagById(id);
             runInAction(() => {
-                this.currentFlag = this.flags.find(f => f.id === id) ?? null;
+                this.currentFlag = data;
             });
         } catch (e) {
             runInAction(() => {
@@ -102,9 +97,9 @@ class FeatureFlagStore {
 
         try {
             await APIClient.updateFlag(id, changes);
-            const data = await APIClient.getFlags();
+            const data = await APIClient.getFlagById(id);
             runInAction(() => {
-                this.flags = data;
+                this.currentFlag = data;
             });
         } catch (e) {
             runInAction(() => {
@@ -123,14 +118,9 @@ class FeatureFlagStore {
 
         try {
             await APIClient.turnFlag(id, turnOff);
+            const data = await APIClient.getFlagById(id);
             runInAction(() => {
-                const currentFlag= this.flags.
-                find(item => item.id === id);
-
-                if (currentFlag) {
-                    currentFlag.status = turnOff ?
-                        "disabled" : "enabled";
-                }
+                this.currentFlag = data;
             });
         } catch (e) {
             runInAction(() => {
