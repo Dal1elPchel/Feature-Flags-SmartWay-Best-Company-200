@@ -20,7 +20,7 @@ class UserStore {
             const user = await APIClient.getMe();
             runInAction(() => this.currentUser = user);
         } catch {
-            localStorage.removeItem("token"); // токен мёртв — чистим
+            localStorage.removeItem("token");
         }
     }
 
@@ -52,6 +52,10 @@ class UserStore {
 
     get isAuth() {
         return this.currentUser !== null;
+    }
+
+    setErrorNull() {
+        this.error = null;
     }
 }
 
