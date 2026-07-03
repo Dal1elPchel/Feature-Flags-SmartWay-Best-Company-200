@@ -2,7 +2,7 @@ import {FeatureFlag, FlagEnvironment, FlagStatus} from "../types/featureFlag.ts"
 import {User} from "../types/user.ts";
 
 export class APIClient {
-    private static baseURL: string = "http://localhost:8080";
+    private static baseURL: string = "http://localhost";
 
     private static getAuthHeaders(): HeadersInit {
         const token = localStorage.getItem("token");
@@ -133,7 +133,7 @@ export class APIClient {
             createdAt: data.createdAt,
             updatedBy: data.updatedBy,
             updatedAt: data.updatedAt,
-            commandId: data. commandId // ПОМЕНЯТЬ, ВОЗМОЖНО КЛЮЧ ДРУГОЙ!!!!
+            commandId: data.owner_team_id
         };
 
         return flag;
@@ -338,7 +338,7 @@ export class APIClient {
             name: data.name,
             email: data.email,
             surname: data.surname,
-            commandId: data.command
+            commandId: data.teamId
         };
 
         return authUser;
