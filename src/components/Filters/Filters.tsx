@@ -29,8 +29,6 @@ const Filters = ({ onLoad,
 
     const values = useWatch({control});
 
-    console.log(values);
-
     const [debounced, setDebounced] = useState(values);
 
     useEffect(() => {
