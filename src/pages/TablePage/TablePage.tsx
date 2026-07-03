@@ -34,7 +34,11 @@ const TablePage = observer(() => {
 
         {
             key: "description",
-            title: "Описание"
+            title: "Описание",
+            render: (row: FeatureFlag) => (
+                <div className={styles.description}>
+                    {row.description}
+                </div>)
         },
 
         {
