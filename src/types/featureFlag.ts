@@ -1,4 +1,4 @@
-export type FlagEnvironment = "production" | "staging" | "development";
+export type FlagEnvironment = "production" | "staging" | "dev";
 export type FlagStatus = "enabled" | "disabled";
 
 export interface FeatureFlag {
@@ -12,5 +12,6 @@ export interface FeatureFlag {
     createdAt: string;
     updatedBy: string;
     updatedAt: string;
+    commandId?: string;
 }
 

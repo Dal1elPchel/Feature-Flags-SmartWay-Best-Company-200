@@ -1,7 +1,7 @@
 import styles from "../Page.module.scss";
 import {useNavigate, useParams} from "react-router-dom";
 import featureFlagStore from "../../stores/FeatureFlagStore.ts";
-import {ArrowLeft} from "lucide-react";
+import {ArrowLeft, AlertTriangleIcon} from "lucide-react";
 import FlagList from "../../components/FlagList/FlagList.tsx";
 import Button from "../../components/Button/Button.tsx";
 import {useEffect, useState} from "react";
@@ -41,7 +41,7 @@ const FlagCardPage = observer(() => {
         navigate(`/flags/${currentFlag.id}/edit`)
     }
 
-    const canUserEdit = userStore.currentUser?.command === currentFlag.owner;
+    const canUserEdit = userStore.currentUser?.commandId === currentFlag.commandId;
 
     return (
         <>
@@ -69,23 +69,26 @@ const FlagCardPage = observer(() => {
                 <FlagList flag={currentFlag}/>
                 <div className={styles.buttonManager}>
                     {!canUserEdit && (
-                        <span>Вы не можете редактировать флаг,
+                        <span> <AlertTriangleIcon/> Вы не можете редактировать флаг,
                             команда флага и ваша команда не совпадают!</span>
                     )}
-                    <Button
-                        text={"Редактировать"}
-                        isAccent={false}
-                        isSubmit={false}
-                        onClick={EditClick}
-                        isDisabled={!canUserEdit}
-                    />
-                    <Button
-                        text={currentFlag.status === "enabled" ? "Выключить" : "Включить"}
-                        isSubmit={false}
-                        isAccent={true}
-                        onClick={() => {setIsModalOpen(true)}}
-                        isDisabled={!canUserEdit}
-                    />
+
+                    <div className={styles.buttons}>
+                        <Button
+                            text={"Редактировать"}
+                            isAccent={false}
+                            isSubmit={false}
+                            onClick={EditClick}
+                            isDisabled={!canUserEdit}
+                        />
+                        <Button
+                            text={currentFlag.status === "enabled" ? "Выключить" : "Включить"}
+                            isSubmit={false}
+                            isAccent={true}
+                            onClick={() => {setIsModalOpen(true)}}
+                            isDisabled={!canUserEdit}
+                        />
+                    </div>
                 </div>
             </div>
         </section>

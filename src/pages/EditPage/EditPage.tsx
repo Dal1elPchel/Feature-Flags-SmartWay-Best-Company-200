@@ -23,7 +23,7 @@ interface FormData {
 const envVariants: {value: FlagEnvironment, label: string}[] = [
     {value: "staging", label: "staging"},
     {value: "production", label: "production"},
-    {value: "development", label: "development"}
+    {value: "dev", label: "development"}
 ];
 
 const statusVariants: {value: FlagStatus, label: string}[] = [
