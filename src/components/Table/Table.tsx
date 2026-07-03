@@ -1,6 +1,7 @@
 import {useMemo, useState} from "react";
 import styles from "./Table.module.scss";
 import {ChevronLeft, ChevronRight} from "lucide-react";
+import InfoMessage from "../InfoMessage/InfoMessage.tsx";
 
 interface Column<T> {
     key: keyof T | string;
@@ -22,6 +23,11 @@ function Table<T>({
                   }: TableProps<T>) {
 
     const [page, setPage] = useState(1);
+
+    if (data.length === 0) {
+        return <InfoMessage message={"Список флагов пуст. Вы можете добавить новый флаг!"}
+                            status={"success"}/>
+    }
 
     const totalPages = Math.ceil(data.length / pageSize);
 
