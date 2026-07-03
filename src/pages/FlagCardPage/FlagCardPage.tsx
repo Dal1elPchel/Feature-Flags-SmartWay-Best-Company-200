@@ -10,13 +10,25 @@ import ProductionWarning from "../../components/ProductionWarning/ProductionWarn
 import Modal from "../../components/Modal/Modal.tsx";
 import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
 import userStore from "../../stores/UserStore.ts";
-
+import {useLocation} from "react-router-dom";
 
 const FlagCardPage = observer(() => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-
     const {id} = useParams();
+    const location = useLocation();
+    const [showSuccess, setShowSuccess] = useState(
+        location.state?.created ?? false
+    );
+
+    useEffect(() => {
+        if (!showSuccess) return;
+
+        const timer = setTimeout(
+            () => {setShowSuccess(false)}, 2000);
+
+        return () => clearTimeout(timer);
+    }, [showSuccess]);
 
     useEffect(() => {
         if (id) {
@@ -41,11 +53,16 @@ const FlagCardPage = observer(() => {
         navigate(`/flags/${currentFlag.id}/edit`)
     }
 
-    const canUserEdit = userStore.currentUser?.commandId === currentFlag.commandId;
+    const canUserEdit = userStore.currentUser?.commandId == currentFlag.commandId;
 
     return (
         <>
         <section className={styles.section}>
+
+            {showSuccess && (
+                <InfoMessage message="Флаг успешно создан!" status="success"/>
+            )}
+
             {featureFlagStore.error && (
                 <InfoMessage message={featureFlagStore.error}
                              status={"error"}
@@ -70,7 +87,7 @@ const FlagCardPage = observer(() => {
                 <div className={styles.buttonManager}>
                     {!canUserEdit && (
                         <span> <AlertTriangleIcon/> Вы не можете редактировать флаг,
-                            команда флага и ваша команда не совпадают!</span>
+                            который принадлежит другой команде!</span>
                     )}
 
                     <div className={styles.buttons}>
