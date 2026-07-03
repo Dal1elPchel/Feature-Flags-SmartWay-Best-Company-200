@@ -10,7 +10,6 @@ import Button from "../../components/Button/Button.tsx";
 import {useNavigate} from "react-router-dom";
 import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
 import {observer} from "mobx-react-lite";
-
 interface FormData {
     name: string;
     description: string;
@@ -40,10 +39,14 @@ const AddPage = observer(() => {
             status: data.status,
             environment: data.environment
         };
-        await featureFlagStore.createNew(newFlag);
+        const id = await featureFlagStore.createNew(newFlag);
 
         if (!featureFlagStore.error && !featureFlagStore.isLoading) {
-            navigate("/");
+            navigate(`/flags/${id}`, {
+                state: {
+                    created: true
+                }
+            });
         }
     }
 
@@ -83,6 +86,10 @@ const AddPage = observer(() => {
                                 maxLength: {
                                     value: 20,
                                     message: "Максимум 20 символов"
+                                },
+                                pattern: {
+                                    value: /^[A-Za-z_]+$/,
+                                    message: "Допустимы только английские буквы и символ '_'"
                                 }
                             })}
                         />
@@ -104,6 +111,10 @@ const AddPage = observer(() => {
                                 minLength: {
                                     value: 6,
                                     message: "Минимум 6 символов"
+                                },
+                                maxLength: {
+                                    value: 300,
+                                    message: "Максимум 300 символов"
                                 }
                             })}
                         />
