@@ -21,11 +21,15 @@ class FeatureFlagStore {
         this.isLoading = false;
     }
 
-    async loadFlags() {
+    async loadFlags(optionalData?: {
+        search?: string,
+        environment?: string,
+        status?: string
+    }) {
         this.startLoading();
 
         try {
-            const data = await APIClient.getFlags();
+            const data = await APIClient.getFlags(optionalData);
             runInAction(() => {
                 this.flags = data;
             });
