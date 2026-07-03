@@ -2,7 +2,7 @@ import {FeatureFlag, FlagEnvironment, FlagStatus} from "../types/featureFlag.ts"
 import {User} from "../types/user.ts";
 
 export class APIClient {
-    private static baseURL: string = "https://localhost:8080";
+    private static baseURL: string = "http://localhost:8080";
 
     private static getAuthHeaders(): HeadersInit {
         const token = localStorage.getItem("token");
@@ -12,9 +12,27 @@ export class APIClient {
         };
     }
 
-    static async getFlags(): Promise<FeatureFlag[]> {
+    static async getFlags(optionalData?: {
+        search?: string,
+        environment?: string,
+        status?: string
+    }): Promise<FeatureFlag[]> {
 
-        const response = await fetch(`${this.baseURL}/flags`,
+        const params = new URLSearchParams();
+
+        if (optionalData?.search) {
+            params.append("search", optionalData.search);
+        }
+
+        if (optionalData?.environment) {
+            params.append("environment", optionalData.environment);
+        }
+
+        if (optionalData?.status) {
+            params.append("status", optionalData.status);
+        }
+
+        const response = await fetch(`${this.baseURL}/flags?${params.toString()}`,
             {
                 method: "GET",
                 headers: this.getAuthHeaders()
@@ -115,6 +133,7 @@ export class APIClient {
             createdAt: data.createdAt,
             updatedBy: data.updatedBy,
             updatedAt: data.updatedAt,
+            commandId: data. commandId // ПОМЕНЯТЬ, ВОЗМОЖНО КЛЮЧ ДРУГОЙ!!!!
         };
 
         return flag;
@@ -319,7 +338,7 @@ export class APIClient {
             name: data.name,
             email: data.email,
             surname: data.surname,
-            command: data.command
+            commandId: data.command
         };
 
         return authUser;
