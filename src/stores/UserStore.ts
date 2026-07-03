@@ -6,6 +6,7 @@ class UserStore {
     currentUser: User | null = null;
     loading: boolean = false;
     error: string | null = null;
+    isInitialized: boolean = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -14,13 +15,19 @@ class UserStore {
 
     private async restoreUser() {
         const token = localStorage.getItem("token");
-        if (!token) return;
+        if (!token) {
+            runInAction(() => {this.isInitialized = true});
+            return;
+        }
 
         try {
             const user = await APIClient.getMe();
             runInAction(() => this.currentUser = user);
         } catch {
             localStorage.removeItem("token");
+        }
+        finally {
+            runInAction(() => {this.isInitialized = true});
         }
     }
 
