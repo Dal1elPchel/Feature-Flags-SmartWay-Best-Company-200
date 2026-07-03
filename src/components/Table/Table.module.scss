@@ -1,100 +1,80 @@
 .wrapper {
-  background: white;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0,0,0,.05);
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
+    width: 100%;
+    border-collapse: collapse;
 }
 
 thead {
+    background: #fafafa;
 
-  background: #fafafa;
-
-  th {
-
-    padding: 18px 24px;
-    text-align: left;
-    font-weight: 600;
-    color: #555;
-    border-bottom: 1px solid #eee;
-
-  }
-
+    th {
+        padding: 18px 24px;
+        text-align: left;
+        font-weight: 600;
+        color: #555;
+        border-bottom: 1px solid #eee;
+    }
 }
 
 tbody {
+    tr {
+        transition: 0.2s;
 
-  tr {
-
-    transition: .2s;
-
-    &:hover {
-
-      background: #fafafa;
-
+        &:hover {
+            background: #fafafa;
+        }
     }
 
-  }
-
-  td {
-
-    padding: 10px 24px;
-    border-bottom: 1px solid #f2f2f2;
-
-  }
-
+    td {
+        padding: 10px 24px;
+        border-bottom: 1px solid #f2f2f2;
+    }
 }
 
 .footer {
+    padding: 18px 24px;
 
-  padding: 18px 24px;
+    display: flex;
 
-  display: flex;
+    justify-content: space-between;
 
-  justify-content: space-between;
-
-  align-items: center;
-
+    align-items: center;
 }
 
 .pagination {
-
-  display: flex;
-
-  gap: 8px;
-
-  button {
-
     display: flex;
-    align-items: center;
-    justify-content: center;
 
-    width: 36px;
-    height: 36px;
+    gap: 8px;
 
-    border: 1px solid #ddd;
-    background: white;
+    button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-    border-radius: 8px;
+        width: 36px;
+        height: 36px;
 
-    cursor: pointer;
+        border: 1px solid #ddd;
+        background: white;
 
-    &:disabled {
-      opacity: .4;
-      cursor: default;
+        border-radius: 8px;
+
+        cursor: pointer;
+
+        &:disabled {
+            opacity: 0.4;
+            cursor: default;
+        }
     }
-
-  }
-
 }
 
 .active {
-
-  background: #ef4444 !important;
-  color: white;
-
+    background: #ef4444 !important;
+    color: white;
 }

@@ -1,12 +1,12 @@
 .inputElem {
-  width: 100%;
-  border: 1px solid var(--color-text-light);
-  border-radius: 15px;
-  padding: 12px 8px;
-  color: var(--color-text-primary);
+    width: 100%;
+    border: 1px solid var(--color-text-light);
+    border-radius: 15px;
+    padding: 12px 8px;
+    color: var(--color-text-primary);
 
-  &:focus {
-    outline: none;
-    border-color: var(--color-accent);
-  }
+    &:focus {
+        outline: none;
+        border-color: var(--color-accent);
+    }
 }

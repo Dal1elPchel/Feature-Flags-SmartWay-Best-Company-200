@@ -1,10 +1,10 @@
-import styles from "./Filters.module.scss";
-import Button from "../Button/Button.tsx";
-import {useNavigate} from "react-router-dom";
-import Input from "../Input/Input.tsx";
-import Select from "../Select/Select.tsx";
-import {useForm, useWatch} from "react-hook-form";
-import {useEffect, useState} from "react";
+import styles from './Filters.module.scss';
+import Button from '../Button/Button.tsx';
+import { useNavigate } from 'react-router-dom';
+import Input from '../Input/Input.tsx';
+import Select from '../Select/Select.tsx';
+import { useForm, useWatch } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 
 interface FormData {
     search?: string;
@@ -14,20 +14,18 @@ interface FormData {
 
 interface FilterProps {
     onLoad: (data: FormData) => void;
-    environmentOptions: {value: string, label: string}[];
-    statusOptions: {value: string, label: string}[];
+    environmentOptions: { value: string; label: string }[];
+    statusOptions: { value: string; label: string }[];
 }
 
-const Filters = ({ onLoad,
-                     environmentOptions,
-                     statusOptions}: FilterProps) => {
+const Filters = ({ onLoad, environmentOptions, statusOptions }: FilterProps) => {
     const navigate = useNavigate();
 
-    const {register, control, reset} = useForm<FormData>({
-        defaultValues: {search: "", environment: "", status: ""}
+    const { register, control, reset } = useForm<FormData>({
+        defaultValues: { search: '', environment: '', status: '' },
     });
 
-    const values = useWatch({control});
+    const values = useWatch({ control });
 
     const [debounced, setDebounced] = useState(values);
 
@@ -38,34 +36,39 @@ const Filters = ({ onLoad,
 
     useEffect(() => {
         onLoad(debounced as FormData);
-    }, [debounced]);
-
+    }, [debounced, onLoad]);
 
     const onCreate = () => {
-        navigate("/add");
+        navigate('/add');
     };
 
     return (
         <section className={styles.card}>
-
-            <form className={styles.filtersManager}
-            onSubmit={(e) => e.preventDefault()}>
-                <Input placeholder={"Поиск по названию"}
-                    typeInput={"text"} {...register("search")}/>
-                <Select options={environmentOptions} {...register("environment")}
-                 placeholder={"Окружение"}/>
-                <Select options={statusOptions} {...register("status")}
-                        placeholder={"Статус"}/>
+            <form className={styles.filtersManager} onSubmit={(e) => e.preventDefault()}>
+                <Input
+                    placeholder={'Поиск по названию'}
+                    typeInput={'text'}
+                    {...register('search')}
+                />
+                <Select
+                    options={environmentOptions}
+                    {...register('environment')}
+                    placeholder={'Окружение'}
+                />
+                <Select options={statusOptions} {...register('status')} placeholder={'Статус'} />
             </form>
 
             <div className={styles.button}>
-                <Button text={"Сбросить фильтры"} isAccent={false} isSubmit={false}
-                        onClick={() => reset()}/>
-                <Button text={"Создать флаг"} isAccent isSubmit={false}
-                        onClick={onCreate}/>
+                <Button
+                    text={'Сбросить фильтры'}
+                    isAccent={false}
+                    isSubmit={false}
+                    onClick={() => reset()}
+                />
+                <Button text={'Создать флаг'} isAccent isSubmit={false} onClick={onCreate} />
             </div>
         </section>
     );
-}
+};
 
 export default Filters;

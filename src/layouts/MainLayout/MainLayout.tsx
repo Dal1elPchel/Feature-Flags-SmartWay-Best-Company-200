@@ -1,15 +1,15 @@
-import Header from "../Header/Header.tsx";
-import {Outlet} from "react-router-dom";
-import Sidebar from "../Sidebar/Sidebar.tsx";
+import Header from '../Header/Header.tsx';
+import { Outlet } from 'react-router-dom';
+import Sidebar from '../Sidebar/Sidebar.tsx';
 
 const MainLayout = () => {
     return (
         <>
             <Header />
-            <Sidebar/>
+            <Sidebar />
 
             <main>
-                <Outlet/>
+                <Outlet />
             </main>
         </>
     );

@@ -1,61 +1,59 @@
-import {FeatureFlag, FlagEnvironment, FlagStatus} from "../types/featureFlag.ts";
-import {User} from "../types/user.ts";
+import { FeatureFlag, FlagEnvironment, FlagStatus } from '../types/featureFlag.ts';
+import { User } from '../types/user.ts';
 
 export class APIClient {
-    private static baseURL: string = "http://localhost";
+    private static baseURL: string = 'http://localhost';
 
     private static getAuthHeaders(): HeadersInit {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         return {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
         };
     }
 
     static async getFlags(optionalData?: {
-        search?: string,
-        environment?: string,
-        status?: string
+        search?: string;
+        environment?: string;
+        status?: string;
     }): Promise<FeatureFlag[]> {
-
         const params = new URLSearchParams();
 
         if (optionalData?.search) {
-            params.append("search", optionalData.search);
+            params.append('search', optionalData.search);
         }
 
         if (optionalData?.environment) {
-            params.append("environment", optionalData.environment);
+            params.append('environment', optionalData.environment);
         }
 
         if (optionalData?.status) {
-            params.append("status", optionalData.status);
+            params.append('status', optionalData.status);
         }
 
-        const response = await fetch(`${this.baseURL}/flags?${params.toString()}`,
-            {
-                method: "GET",
-                headers: this.getAuthHeaders()
-            });
+        const response = await fetch(`${this.baseURL}/flags?${params.toString()}`, {
+            method: 'GET',
+            headers: this.getAuthHeaders(),
+        });
 
         if (!response.ok) {
             switch (response.status) {
                 case 400:
-                    throw new Error("Не удалось обработать запрос");
+                    throw new Error('Не удалось обработать запрос');
 
                 case 401:
-                    throw new Error("Необходимо выполнить вход");
+                    throw new Error('Необходимо выполнить вход');
 
                 case 403:
-                    throw new Error("У вас нет доступа к списку фич-флагов");
+                    throw new Error('У вас нет доступа к списку фич-флагов');
 
                 case 404:
-                    throw new Error("Список фич-флагов не найден");
+                    throw new Error('Список фич-флагов не найден');
 
                 case 500:
                 case 502:
                 case 503:
-                    throw new Error("Сервис временно недоступен. Попробуйте позже");
+                    throw new Error('Сервис временно недоступен. Попробуйте позже');
 
                 default:
                     throw new Error(`Ошибка ${response.status}`);
@@ -64,57 +62,59 @@ export class APIClient {
 
         const data = await response.json();
 
-        const flags: FeatureFlag[] = data.map((item:
-                                               { id: string;
-                                                   name: string;
-                                                   description: string;
-                                                   environment: string;
-                                                   status: string;
-                                                   owner: string;
-                                                   createdBy: string;
-                                                   createdAt: string;
-                                                   updatedBy: string;
-                                                   updatedAt: string; }) => ({
-            id: item.id,
-            name: item.name,
-            description: item.description,
-            environment: item.environment,
-            status: item.status,
-            owner: item.owner,
-            createdBy: item.createdBy,
-            createdAt: item.createdAt,
-            updatedBy: item.updatedBy,
-            updatedAt: item.updatedAt,
-        }));
+        const flags: FeatureFlag[] = data.map(
+            (item: {
+                id: string;
+                name: string;
+                description: string;
+                environment: string;
+                status: string;
+                owner: string;
+                createdBy: string;
+                createdAt: string;
+                updatedBy: string;
+                updatedAt: string;
+            }) => ({
+                id: item.id,
+                name: item.name,
+                description: item.description,
+                environment: item.environment,
+                status: item.status,
+                owner: item.owner,
+                createdBy: item.createdBy,
+                createdAt: item.createdAt,
+                updatedBy: item.updatedBy,
+                updatedAt: item.updatedAt,
+            }),
+        );
 
         return flags;
     }
 
     static async getFlagById(id: string): Promise<FeatureFlag> {
-        const response = await fetch(`${this.baseURL}/flags/${id}`,
-            {
-                method: "GET",
-                headers: this.getAuthHeaders()
-            });
+        const response = await fetch(`${this.baseURL}/flags/${id}`, {
+            method: 'GET',
+            headers: this.getAuthHeaders(),
+        });
 
         if (!response.ok) {
             switch (response.status) {
                 case 400:
-                    throw new Error("Не удалось загрузить флаг");
+                    throw new Error('Не удалось загрузить флаг');
 
                 case 401:
-                    throw new Error("Необходимо выполнить вход");
+                    throw new Error('Необходимо выполнить вход');
 
                 case 403:
-                    throw new Error("У вас нет доступа к  фич-флагу");
+                    throw new Error('У вас нет доступа к  фич-флагу');
 
                 case 404:
-                    throw new Error("Фич-флаг не найден");
+                    throw new Error('Фич-флаг не найден');
 
                 case 500:
                 case 502:
                 case 503:
-                    throw new Error("Сервис временно недоступен. Попробуйте позже");
+                    throw new Error('Сервис временно недоступен. Попробуйте позже');
 
                 default:
                     throw new Error(`Ошибка ${response.status}`);
@@ -133,29 +133,28 @@ export class APIClient {
             createdAt: data.createdAt,
             updatedBy: data.updatedBy,
             updatedAt: data.updatedAt,
-            commandId: data.owner_team_id
+            commandId: data.owner_team_id,
         };
 
         return flag;
     }
 
     static async createNewFlag(newFlag: {
-        name: string,
-        description: string,
-        status: string,
-        environment: string}): Promise<string> {
-
-        const response = await fetch(`${this.baseURL}/flags`,
-            {
-                method: "POST",
-                headers: this.getAuthHeaders(),
-                body: JSON.stringify({
-                    name: newFlag.name,
-                    description: newFlag.description,
-                    status: newFlag.status,
-                    environment: newFlag.environment,
-                })
-            });
+        name: string;
+        description: string;
+        status: string;
+        environment: string;
+    }): Promise<string> {
+        const response = await fetch(`${this.baseURL}/flags`, {
+            method: 'POST',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify({
+                name: newFlag.name,
+                description: newFlag.description,
+                status: newFlag.status,
+                environment: newFlag.environment,
+            }),
+        });
 
         if (!response.ok) {
             switch (response.status) {
@@ -181,55 +180,55 @@ export class APIClient {
         const data = await response.json();
 
         return data.id;
-
     }
 
-    static async updateFlag(id: string, changes: {
-        name: string,
-        description: string,
-        environment: FlagEnvironment,
-        status: FlagStatus}
-        ): Promise<void> {
-
-        const response = await fetch(`${this.baseURL}/flags/${id}`,
-            {
-                method: "PUT",
-                headers: this.getAuthHeaders(),
-                body: JSON.stringify({
-                    name: changes.name,
-                    description: changes.description,
-                    environment: changes.environment,
-                    status: changes.status
-                })
-            });
+    static async updateFlag(
+        id: string,
+        changes: {
+            name: string;
+            description: string;
+            environment: FlagEnvironment;
+            status: FlagStatus;
+        },
+    ): Promise<void> {
+        const response = await fetch(`${this.baseURL}/flags/${id}`, {
+            method: 'PUT',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify({
+                name: changes.name,
+                description: changes.description,
+                environment: changes.environment,
+                status: changes.status,
+            }),
+        });
 
         if (!response.ok) {
             switch (response.status) {
                 case 400:
-                    throw new Error("Запрос содержит некорректные данные");
+                    throw new Error('Запрос содержит некорректные данные');
 
                 case 401:
-                    throw new Error("Сессия истекла. Войдите в систему снова");
+                    throw new Error('Сессия истекла. Войдите в систему снова');
 
                 case 403:
-                    throw new Error("У вас нет прав на изменение этого фич-флага");
+                    throw new Error('У вас нет прав на изменение этого фич-флага');
 
                 case 404:
-                    throw new Error("Фич-флаг не найден");
+                    throw new Error('Фич-флаг не найден');
 
                 case 409:
-                    throw new Error("Фич-флаг с таким именем уже существует");
+                    throw new Error('Фич-флаг с таким именем уже существует');
 
                 case 422:
-                    throw new Error("Не удалось сохранить изменения. Проверьте введённые данные");
+                    throw new Error('Не удалось сохранить изменения. Проверьте введённые данные');
 
                 case 429:
-                    throw new Error("Слишком много запросов. Попробуйте позже");
+                    throw new Error('Слишком много запросов. Попробуйте позже');
 
                 case 500:
                 case 502:
                 case 503:
-                    throw new Error("Сервис временно недоступен. Попробуйте позже");
+                    throw new Error('Сервис временно недоступен. Попробуйте позже');
 
                 default:
                     throw new Error(`Ошибка ${response.status}`);
@@ -238,14 +237,13 @@ export class APIClient {
     }
 
     static async turnFlag(id: string, turnOff: boolean): Promise<void> {
-        const response = await fetch(`${this.baseURL}/flags/${id}/status`,
-            {
-                method: "PATCH",
-                headers: this.getAuthHeaders(),
-                body: JSON.stringify({
-                    status: turnOff ? "disabled" : "enabled"
-                })
-            });
+        const response = await fetch(`${this.baseURL}/flags/${id}/status`, {
+            method: 'PATCH',
+            headers: this.getAuthHeaders(),
+            body: JSON.stringify({
+                status: turnOff ? 'disabled' : 'enabled',
+            }),
+        });
 
         if (!response.ok) {
             switch (response.status) {
@@ -274,18 +272,16 @@ export class APIClient {
     }
 
     static async login(email: string, password: string): Promise<string> {
-
-        const response = await fetch(`${this.baseURL}/auth/login`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    email: email,
-                    password: password
-                })
-            });
+        const response = await fetch(`${this.baseURL}/auth/login`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+            }),
+        });
 
         if (!response.ok) {
             switch (response.status) {
@@ -310,15 +306,12 @@ export class APIClient {
     }
 
     static async getMe(): Promise<User> {
-
-        const response = await fetch(`${this.baseURL}/me`,
-            {
-                method: "GET",
-                headers: this.getAuthHeaders()
-            });
+        const response = await fetch(`${this.baseURL}/me`, {
+            method: 'GET',
+            headers: this.getAuthHeaders(),
+        });
 
         if (!response.ok) {
-
             switch (response.status) {
                 case 401:
                     throw new Error('Сессия истекла, авторизуйтесь снова');
@@ -329,7 +322,7 @@ export class APIClient {
                 default:
                     throw new Error(`Ошибка: ${response.status}`);
             }
-            }
+        }
 
         const data = await response.json();
 
@@ -338,7 +331,7 @@ export class APIClient {
             name: data.name,
             email: data.email,
             surname: data.surname,
-            commandId: data.teamId
+            commandId: data.teamId,
         };
 
         return authUser;

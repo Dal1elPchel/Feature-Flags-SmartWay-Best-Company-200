@@ -1,14 +1,13 @@
-import {FeatureFlag} from "../../types/featureFlag.ts";
-import styles from "./FlagList.module.scss";
-import Badge from "../Badge/Badge.tsx";
-import {Copy} from "lucide-react";
+import { FeatureFlag } from '../../types/featureFlag.ts';
+import styles from './FlagList.module.scss';
+import Badge from '../Badge/Badge.tsx';
+import { Copy } from 'lucide-react';
 
 interface FlagCardProps {
     flag: FeatureFlag;
 }
 
-const FlagList = ({flag}: FlagCardProps) => {
-
+const FlagList = ({ flag }: FlagCardProps) => {
     const data = {
         name: flag.name,
         description: flag.description,
@@ -18,12 +17,12 @@ const FlagList = ({flag}: FlagCardProps) => {
         createdBy: flag.createdBy,
         createdAt: flag.createdAt,
         updatedBy: flag.updatedBy,
-        updatedAt: flag.updatedAt
-    }
+        updatedAt: flag.updatedAt,
+    };
 
     const handleCopy = async () => {
         await navigator.clipboard.writeText(data.name);
-    }
+    };
 
     return (
         <dl className={styles.flagCard}>
@@ -32,7 +31,7 @@ const FlagList = ({flag}: FlagCardProps) => {
                 <dd>
                     <span>{data.name}</span>
                     <button onClick={handleCopy}>
-                        <Copy/>
+                        <Copy />
                     </button>
                 </dd>
             </div>
@@ -44,12 +43,16 @@ const FlagList = ({flag}: FlagCardProps) => {
 
             <div className={styles.cardRow}>
                 <dt>Окружение</dt>
-                <dd><Badge text={data.environment}/></dd>
+                <dd>
+                    <Badge text={data.environment} />
+                </dd>
             </div>
 
             <div className={styles.cardRow}>
                 <dt>Статус</dt>
-                <dd><Badge text={data.status}/></dd>
+                <dd>
+                    <Badge text={data.status} />
+                </dd>
             </div>
 
             <div className={styles.cardRow}>
@@ -68,14 +71,16 @@ const FlagList = ({flag}: FlagCardProps) => {
             <div className={styles.cardRow}>
                 <dt>Последнее изменение</dt>
                 <dd>
-                    <span>{data.updatedAt ?
-                        new Date(data.updatedAt).toLocaleString() : "Изменений не было."}</span>
-                    <span>{data.updatedBy ? data.updatedBy : ""}</span>
+                    <span>
+                        {data.updatedAt
+                            ? new Date(data.updatedAt).toLocaleString()
+                            : 'Изменений не было.'}
+                    </span>
+                    <span>{data.updatedBy ? data.updatedBy : ''}</span>
                 </dd>
             </div>
-
         </dl>
     );
-}
+};
 
 export default FlagList;

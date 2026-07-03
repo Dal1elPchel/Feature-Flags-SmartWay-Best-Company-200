@@ -1,5 +1,5 @@
-export type FlagEnvironment = "production" | "staging" | "dev";
-export type FlagStatus = "enabled" | "disabled";
+export type FlagEnvironment = 'production' | 'staging' | 'dev';
+export type FlagStatus = 'enabled' | 'disabled';
 
 export interface FeatureFlag {
     id: string;
@@ -14,4 +14,3 @@ export interface FeatureFlag {
     updatedAt: string;
     commandId?: string;
 }
-

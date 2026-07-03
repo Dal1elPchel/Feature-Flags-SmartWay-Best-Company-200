@@ -1,47 +1,46 @@
 .Button {
-  display: flex;
-  justify-content: center;
-  flex-direction: row;
-  padding: 10px 25px;
-  gap: 12px;
-  border-radius: 10px;
-  transition: .15s ease-in-out;
-  background-color: var(--color-bg-page);
-  border: 1px   solid var(--color-text-light);
-  color: var(--color-text-primary);
-  font-size: var(--font-size-md);
-  font-weight: normal;
-  white-space: normal;
-  text-align: center;
-  max-width: 250px;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    padding: 10px 25px;
+    gap: 12px;
+    border-radius: 10px;
+    transition: 0.15s ease-in-out;
+    background-color: var(--color-bg-page);
+    border: 1px solid var(--color-text-light);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    font-weight: normal;
+    white-space: normal;
+    text-align: center;
+    max-width: 250px;
 }
 
-
 .Button:hover {
-  transform: scale(1.05);
+    transform: scale(1.05);
 }
 
 .accent {
-  background-color: var(--color-accent);
-  border: 2px solid var(--color-accent-hover);
-  color: var(--color-bg-card);
+    background-color: var(--color-accent);
+    border: 2px solid var(--color-accent-hover);
+    color: var(--color-bg-card);
 }
 
 .Button:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-  background-color: var(--color-bg-page);
-  border: 1px solid var(--color-text-light);
-  color: var(--color-text-light);
+    cursor: not-allowed;
+    opacity: 0.5;
+    background-color: var(--color-bg-page);
+    border: 1px solid var(--color-text-light);
+    color: var(--color-text-light);
 }
 
 .Button:disabled:hover {
-  transform: none;
+    transform: none;
 }
 
 .accent:disabled {
-  background-color: var(--color-text-light);
-  border: 2px solid var(--color-text-light);
-  color: var(--color-bg-card);
-  opacity: 0.6;
+    background-color: var(--color-text-light);
+    border: 2px solid var(--color-text-light);
+    color: var(--color-bg-card);
+    opacity: 0.6;
 }

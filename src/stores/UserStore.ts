@@ -1,6 +1,6 @@
-import {User} from "../types/user.ts"
-import {APIClient} from "../api/APIClient.ts";
-import {makeAutoObservable, runInAction} from "mobx";
+import { User } from '../types/user.ts';
+import { APIClient } from '../api/APIClient.ts';
+import { makeAutoObservable, runInAction } from 'mobx';
 
 class UserStore {
     currentUser: User | null = null;
@@ -14,20 +14,23 @@ class UserStore {
     }
 
     private async restoreUser() {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem('token');
         if (!token) {
-            runInAction(() => {this.isInitialized = true});
+            runInAction(() => {
+                this.isInitialized = true;
+            });
             return;
         }
 
         try {
             const user = await APIClient.getMe();
-            runInAction(() => this.currentUser = user);
+            runInAction(() => (this.currentUser = user));
         } catch {
-            localStorage.removeItem("token");
-        }
-        finally {
-            runInAction(() => {this.isInitialized = true});
+            localStorage.removeItem('token');
+        } finally {
+            runInAction(() => {
+                this.isInitialized = true;
+            });
         }
     }
 
@@ -37,24 +40,24 @@ class UserStore {
 
         try {
             const token = await APIClient.login(email, password);
-            localStorage.setItem("token", token);
+            localStorage.setItem('token', token);
 
             const data = await APIClient.getMe();
             runInAction(() => {
                 this.currentUser = data;
             });
-
         } catch (e) {
-            runInAction(() => this.error =
-                e instanceof Error ? e.message : "Не удалось войти в систему.");
+            runInAction(
+                () => (this.error = e instanceof Error ? e.message : 'Не удалось войти в систему.'),
+            );
         } finally {
-            runInAction(() => this.loading = false);
+            runInAction(() => (this.loading = false));
         }
     }
 
     logout(): void {
         this.currentUser = null;
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
     }
 
     get isAuth() {

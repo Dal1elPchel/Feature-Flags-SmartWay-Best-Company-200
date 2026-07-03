@@ -1,6 +1,6 @@
-import {FeatureFlag, FlagEnvironment, FlagStatus} from "../types/featureFlag.ts";
-import {makeAutoObservable, runInAction} from "mobx";
-import {APIClient} from "../api/APIClient.ts";
+import { FeatureFlag, FlagEnvironment, FlagStatus } from '../types/featureFlag.ts';
+import { makeAutoObservable, runInAction } from 'mobx';
+import { APIClient } from '../api/APIClient.ts';
 
 class FeatureFlagStore {
     flags: FeatureFlag[] = [];
@@ -21,11 +21,7 @@ class FeatureFlagStore {
         this.isLoading = false;
     }
 
-    async loadFlags(optionalData?: {
-        search?: string,
-        environment?: string,
-        status?: string
-    }) {
+    async loadFlags(optionalData?: { search?: string; environment?: string; status?: string }) {
         this.startLoading();
 
         try {
@@ -35,10 +31,10 @@ class FeatureFlagStore {
             });
         } catch (e) {
             runInAction(() => {
-                this.error = e instanceof Error ? e.message : "Не удалось загрузить флаги, попробуйте позже";
+                this.error =
+                    e instanceof Error ? e.message : 'Не удалось загрузить флаги, попробуйте позже';
             });
-        }
-        finally {
+        } finally {
             runInAction(() => {
                 this.stopLoading();
             });
@@ -55,10 +51,10 @@ class FeatureFlagStore {
             });
         } catch (e) {
             runInAction(() => {
-                this.error = e instanceof Error ? e.message : "Не удалось загрузить флаг, попробуйте позже";
+                this.error =
+                    e instanceof Error ? e.message : 'Не удалось загрузить флаг, попробуйте позже';
             });
-        }
-        finally {
+        } finally {
             runInAction(() => {
                 this.stopLoading();
             });
@@ -66,10 +62,11 @@ class FeatureFlagStore {
     }
 
     async createNew(newFlag: {
-        name: string,
-        description: string,
-        status: string,
-        environment: string}) {
+        name: string;
+        description: string;
+        status: string;
+        environment: string;
+    }) {
         this.startLoading();
 
         try {
@@ -81,22 +78,25 @@ class FeatureFlagStore {
             return id;
         } catch (e) {
             runInAction(() => {
-                this.error = e instanceof Error ? e.message : "Не удалось создать флаг, попробуйте позже";
+                this.error =
+                    e instanceof Error ? e.message : 'Не удалось создать флаг, попробуйте позже';
             });
-        }
-        finally {
+        } finally {
             runInAction(() => {
                 this.stopLoading();
             });
         }
     }
 
-    async update(id: string, changes: {
-        name: string,
-        description: string,
-        environment: FlagEnvironment,
-        status: FlagStatus
-    }) {
+    async update(
+        id: string,
+        changes: {
+            name: string;
+            description: string;
+            environment: FlagEnvironment;
+            status: FlagStatus;
+        },
+    ) {
         this.startLoading();
 
         try {
@@ -107,10 +107,10 @@ class FeatureFlagStore {
             });
         } catch (e) {
             runInAction(() => {
-                this.error = e instanceof Error ? e.message : "Не удалось обновить флаг, попробуйте позже";
+                this.error =
+                    e instanceof Error ? e.message : 'Не удалось обновить флаг, попробуйте позже';
             });
-        }
-        finally {
+        } finally {
             runInAction(() => {
                 this.stopLoading();
             });
@@ -128,17 +128,19 @@ class FeatureFlagStore {
             });
         } catch (e) {
             runInAction(() => {
-                this.error = e instanceof Error ? e.message : `Не удалось ${turnOff ? "выключить" : "включить"} флаг, попробуйте позже`;
+                this.error =
+                    e instanceof Error
+                        ? e.message
+                        : `Не удалось ${turnOff ? 'выключить' : 'включить'} флаг, попробуйте позже`;
             });
-        }
-        finally {
+        } finally {
             runInAction(() => {
                 this.stopLoading();
             });
         }
     }
 
-    setErrorNull () {
+    setErrorNull() {
         this.error = null;
     }
 }

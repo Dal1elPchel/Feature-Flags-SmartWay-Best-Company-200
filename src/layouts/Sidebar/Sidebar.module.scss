@@ -1,80 +1,80 @@
 .aside {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 15%;
-  min-height: 100vh;
-  height: 100%;
-  background-color: var(--color-bg-sidebar);
-  color: var(--color-text-on-dark);
-  font-size: var(--font-size-lg);
-  padding: 6px 10px;
-  font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 15%;
+    min-height: 100vh;
+    height: 100%;
+    background-color: var(--color-bg-sidebar);
+    color: var(--color-text-on-dark);
+    font-size: var(--font-size-lg);
+    padding: 6px 10px;
+    font-weight: 500;
 }
 
 .logo {
-  display: flex;
-  align-items: center;
-  flex-direction: row;
-  gap: 10px;
-  height: 90px;
-  border-radius: 15px;
-  padding: 10px;
-  cursor: pointer;
-
-  div {
-    background-color: var(--color-border-dark);
-    border-radius: 10px;
-    width: 50px;
-    height: 50px;
     display: flex;
     align-items: center;
-    justify-content: center;
-  }
+    flex-direction: row;
+    gap: 10px;
+    height: 90px;
+    border-radius: 15px;
+    padding: 10px;
+    cursor: pointer;
 
-  span {
-    font-weight: bold;
-  }
-  transition: .12s ease-in-out;
+    div {
+        background-color: var(--color-border-dark);
+        border-radius: 10px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    span {
+        font-weight: bold;
+    }
+    transition: 0.12s ease-in-out;
 }
 
 .logo:hover {
-  background-color: var(--color-border-dark);
+    background-color: var(--color-border-dark);
 
-  div {
-    background-color: var(--color-bg-sidebar);
-  }
+    div {
+        background-color: var(--color-bg-sidebar);
+    }
 }
 
 .button {
-  margin-bottom: 10px;
-  display: flex;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  justify-content: flex-start;
-  background: none;
-  border: none;
-  border-radius: 12px;
-  width: 100%;
-  padding: 10px;
-  color: var(--color-text-on-dark);
-  transition: .15s ease-in-out;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-start;
+    background: none;
+    border: none;
+    border-radius: 12px;
+    width: 100%;
+    padding: 10px;
+    color: var(--color-text-on-dark);
+    transition: 0.15s ease-in-out;
 }
 
 .activeButton {
-  background-color: var(--color-border-dark);
-  color: var(--color-accent);
-  border-left: 3px solid var(--color-accent);
+    background-color: var(--color-border-dark);
+    color: var(--color-accent);
+    border-left: 3px solid var(--color-accent);
 }
 
 .button:hover {
-  background-color: var(--color-border-dark);
+    background-color: var(--color-border-dark);
 }
 
 .button:active {
-  transform: scale(0.95);
+    transform: scale(0.95);
 }

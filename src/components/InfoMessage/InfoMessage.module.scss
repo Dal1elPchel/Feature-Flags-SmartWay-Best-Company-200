@@ -1,32 +1,32 @@
 .infoMessage {
-  padding: 15px 15px;
+    padding: 15px 15px;
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 
-  min-height: max-content;
+    min-height: max-content;
 
-  margin: auto;
-  max-width: max-content;
-  font-size: var(--font-size-lg);
-  font-weight: 600;
-  color: var(--color-text-secondary);
+    margin: auto;
+    max-width: max-content;
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    color: var(--color-text-secondary);
 
-  background-color: var(--color-bg-card);
-  border-radius: 20px;
-  box-shadow: var(--shadow-card);
+    background-color: var(--color-bg-card);
+    border-radius: 20px;
+    box-shadow: var(--shadow-card);
 }
 
 .errorMessage {
-  background-color: var(--color-error-bg);
-  border-color: var(--color-error-border);
-  color: var(--color-error-text);
+    background-color: var(--color-error-bg);
+    border-color: var(--color-error-border);
+    color: var(--color-error-text);
 }
 
 .successMessage {
-  background-color: var(--color-success-bg);
-  color: var(--color-success-text);
-  border-color: var(--color-success-border);
+    background-color: var(--color-success-bg);
+    color: var(--color-success-text);
+    border-color: var(--color-success-border);
 }

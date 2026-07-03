@@ -1,38 +1,39 @@
 .badge {
-  border-radius: 8px;
-  border: 1px solid;
-  font-weight: bold;
-  padding: 4px 8px;
-  width: max-content;
-  cursor: pointer;
-  transition: .12s ease-in-out;
-  font-size: var(--font-size-sm);
+    border-radius: 8px;
+    border: 1px solid;
+    font-weight: bold;
+    padding: 4px 8px;
+    width: max-content;
+    cursor: pointer;
+    transition: 0.12s ease-in-out;
+    font-size: var(--font-size-sm);
 
-  &:hover {
-    transform: scale(1.12);
-  }
+    &:hover {
+        transform: scale(1.12);
+    }
 }
 
-.dev, .staging {
-  background-color: #dbeafe;
-  color: #2563eb;
-  border-color: #2563eb;
+.dev,
+.staging {
+    background-color: #dbeafe;
+    color: #2563eb;
+    border-color: #2563eb;
 }
 
 .production {
-  background-color: var(--color-warning-bg);
-  color: var(--color-warning);
-  border-color: var(--color-warning);
+    background-color: var(--color-warning-bg);
+    color: var(--color-warning);
+    border-color: var(--color-warning);
 }
 
 .enabled {
-  background-color: #d1fae5;
-  color: #059669;
-  border-color: #059669;
+    background-color: #d1fae5;
+    color: #059669;
+    border-color: #059669;
 }
 
 .disabled {
-  background-color: #fee2e2;
-  color: #dc2626;
-  border-color: #dc2626;
+    background-color: #fee2e2;
+    color: #dc2626;
+    border-color: #dc2626;
 }

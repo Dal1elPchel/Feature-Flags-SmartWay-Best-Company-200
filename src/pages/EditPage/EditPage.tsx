@@ -1,18 +1,18 @@
-import {useForm, useWatch} from "react-hook-form";
-import featureFlagStore from "../../stores/FeatureFlagStore.ts";
-import styles from "../Page.module.scss";
-import Input from "../../components/Input/Input.tsx";
-import {AlertCircle} from "lucide-react";
-import Textarea from "../../components/Texarea/Textarea.tsx";
-import Select from "../../components/Select/Select.tsx";
-import {FlagEnvironment, FlagStatus} from "../../types/featureFlag.ts";
-import Button from "../../components/Button/Button.tsx";
-import {useNavigate, useParams} from "react-router-dom";
-import {observer} from "mobx-react-lite";
-import {useEffect, useState} from "react";
-import ProductionWarning from "../../components/ProductionWarning/ProductionWarning.tsx";
-import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
-import Modal from "../../components/Modal/Modal.tsx";
+import { useForm, useWatch } from 'react-hook-form';
+import featureFlagStore from '../../stores/FeatureFlagStore.ts';
+import styles from '../Page.module.scss';
+import Input from '../../components/Input/Input.tsx';
+import { AlertCircle } from 'lucide-react';
+import Textarea from '../../components/Texarea/Textarea.tsx';
+import Select from '../../components/Select/Select.tsx';
+import { FlagEnvironment, FlagStatus } from '../../types/featureFlag.ts';
+import Button from '../../components/Button/Button.tsx';
+import { useNavigate, useParams } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
+import { useEffect, useState } from 'react';
+import ProductionWarning from '../../components/ProductionWarning/ProductionWarning.tsx';
+import InfoMessage from '../../components/InfoMessage/InfoMessage.tsx';
+import Modal from '../../components/Modal/Modal.tsx';
 
 interface FormData {
     name: string;
@@ -21,30 +21,37 @@ interface FormData {
     status: FlagStatus;
 }
 
-const envVariants: {value: FlagEnvironment, label: string}[] = [
-    {value: "staging", label: "staging"},
-    {value: "production", label: "production"},
-    {value: "dev", label: "development"}
+const envVariants: { value: FlagEnvironment; label: string }[] = [
+    { value: 'staging', label: 'staging' },
+    { value: 'production', label: 'production' },
+    { value: 'dev', label: 'development' },
 ];
 
-const statusVariants: {value: FlagStatus, label: string}[] = [
-    {value: "enabled", label: "enabled"},
-    {value: "disabled", label: "disabled"}
+const statusVariants: { value: FlagStatus; label: string }[] = [
+    { value: 'enabled', label: 'enabled' },
+    { value: 'disabled', label: 'disabled' },
 ];
 
 const EditPage = observer(() => {
-    const {register, handleSubmit, reset, setValue, control, formState: {errors}} = useForm<FormData>();
+    const {
+        register,
+        handleSubmit,
+        reset,
+        setValue,
+        control,
+        formState: { errors },
+    } = useForm<FormData>();
     const navigate = useNavigate();
 
     const status = useWatch({
         control,
-        name: "status"
+        name: 'status',
     });
 
     const [pendingStatus, setPendingStatus] = useState<FlagStatus | null>(null);
     const [modalOpen, setModalOpen] = useState(false);
 
-    const {id} = useParams();
+    const { id } = useParams();
     const currentFlag = featureFlagStore.currentFlag;
 
     useEffect(() => {
@@ -67,24 +74,38 @@ const EditPage = observer(() => {
     const onCancel = () => {
         setPendingStatus(null);
         setModalOpen(false);
-    }
+    };
 
     const onConfirm = () => {
         if (pendingStatus) {
-            setValue("status", pendingStatus);
+            setValue('status', pendingStatus);
         }
 
         onCancel();
-    }
+    };
 
     if (!id) {
-        return <InfoMessage message={"Не удалось подключиться к флагу, попробуйте позже!"} status={"error"}
-                            onClose={() => {navigate("/")}}/>
+        return (
+            <InfoMessage
+                message={'Не удалось подключиться к флагу, попробуйте позже!'}
+                status={'error'}
+                onClose={() => {
+                    navigate('/');
+                }}
+            />
+        );
     }
 
     if (!currentFlag) {
-        return <InfoMessage message={"Флаг не найден, попробуйте позже!"} status={"error"}
-                            onClose={() => {navigate("/")}}/>
+        return (
+            <InfoMessage
+                message={'Флаг не найден, попробуйте позже!'}
+                status={'error'}
+                onClose={() => {
+                    navigate('/');
+                }}
+            />
+        );
     }
 
     const onSubmit = async (data: FormData) => {
@@ -92,15 +113,14 @@ const EditPage = observer(() => {
             name: data.name,
             description: data.description,
             status: data.status,
-            environment: data.environment
+            environment: data.environment,
         };
         await featureFlagStore.update(id, newFlag);
 
         if (!featureFlagStore.error && !featureFlagStore.isLoading) {
             navigate(`/flags/${currentFlag.id}`);
         }
-
-    }
+    };
 
     const onClose = () => {
         navigate(-1);
@@ -108,52 +128,59 @@ const EditPage = observer(() => {
 
     return (
         <>
-
             {modalOpen && (
                 <Modal
-                    title={"Подтверждение действия"}
-                    infoText={<>Вы действительно хотите
-                        {currentFlag.status === "enabled" ? " Выключить " : " Включить "}
-                        флаг <strong>{currentFlag.name}</strong>?</>}
+                    title={'Подтверждение действия'}
+                    infoText={
+                        <>
+                            Вы действительно хотите
+                            {currentFlag.status === 'enabled' ? ' Выключить ' : ' Включить '}
+                            флаг <strong>{currentFlag.name}</strong>?
+                        </>
+                    }
                     onClose={onCancel}
-                    onConfirm={onConfirm}/>
-                )}
+                    onConfirm={onConfirm}
+                />
+            )}
 
             <section className={styles.section}>
                 {featureFlagStore.error && (
-                    <InfoMessage message={featureFlagStore.error}
-                                 status={"error"}
-                                 onClose={() => {featureFlagStore.setErrorNull()}}/>
+                    <InfoMessage
+                        message={featureFlagStore.error}
+                        status={'error'}
+                        onClose={() => {
+                            featureFlagStore.setErrorNull();
+                        }}
+                    />
                 )}
 
                 {featureFlagStore.isLoading && (
-                    <InfoMessage message={"Загрузка, пожалуйста подождите..."} status={"loading"}/>
+                    <InfoMessage message={'Загрузка, пожалуйста подождите...'} status={'loading'} />
                 )}
                 <div className={styles.title}>Редактирование feature flag</div>
                 <div className={styles.subtitle}>Изменение параметров флага флага</div>
-                {currentFlag.environment === "production" && <ProductionWarning/>}
+                {currentFlag.environment === 'production' && <ProductionWarning />}
                 <div className={styles.formContainer}>
                     <form onSubmit={handleSubmit(onSubmit)}>
-
                         <div className={styles.field}>
-                            <label htmlFor={"name"}>Название (должно быть уникальным)</label>
+                            <label htmlFor={'name'}>Название (должно быть уникальным)</label>
                             <Input
-                                id={"name"}
-                                typeInput={"text"}
-                                {...register("name", {
-                                    required: "Название обязательно!",
+                                id={'name'}
+                                typeInput={'text'}
+                                {...register('name', {
+                                    required: 'Название обязательно!',
                                     minLength: {
                                         value: 6,
-                                        message: "Минимум 6 символов"
+                                        message: 'Минимум 6 символов',
                                     },
                                     maxLength: {
                                         value: 20,
-                                        message: "Максимум 20 символов"
+                                        message: 'Максимум 20 символов',
                                     },
                                     pattern: {
                                         value: /^[A-Za-z_]+$/,
-                                        message: "Допустимы только английские буквы и символ '_'"
-                                    }
+                                        message: "Допустимы только английские буквы и символ '_'",
+                                    },
                                 })}
                             />
                             {errors.name && (
@@ -165,20 +192,20 @@ const EditPage = observer(() => {
                         </div>
 
                         <div className={styles.field}>
-                            <label htmlFor={"description"}>Описание</label>
+                            <label htmlFor={'description'}>Описание</label>
                             <Textarea
-                                id={"description"}
+                                id={'description'}
                                 rows={4}
-                                {...register("description", {
-                                    required: "Описание обязательно!",
+                                {...register('description', {
+                                    required: 'Описание обязательно!',
                                     minLength: {
                                         value: 6,
-                                        message: "Минимум 6 символов"
+                                        message: 'Минимум 6 символов',
                                     },
                                     maxLength: {
                                         value: 300,
-                                        message: "Максимум 300 символов"
-                                    }
+                                        message: 'Максимум 300 символов',
+                                    },
                                 })}
                             />
                             {errors.description && (
@@ -190,12 +217,8 @@ const EditPage = observer(() => {
                         </div>
 
                         <div className={styles.field}>
-                            <label htmlFor={"env"}>Окружение</label>
-                            <Select
-                                id="env"
-                                options={envVariants}
-                                {...register("environment")}
-                            />
+                            <label htmlFor={'env'}>Окружение</label>
+                            <Select id="env" options={envVariants} {...register('environment')} />
 
                             {errors.environment && (
                                 <div className={styles.errorText}>
@@ -206,13 +229,13 @@ const EditPage = observer(() => {
                         </div>
 
                         <div className={styles.field}>
-                            <label htmlFor={"status"}>Статус</label>
+                            <label htmlFor={'status'}>Статус</label>
 
                             <Select
                                 id="status"
                                 options={statusVariants}
                                 value={status}
-                                onChange = {(e) => {
+                                onChange={(e) => {
                                     const nextValue = e.target.value as FlagStatus;
 
                                     setPendingStatus(nextValue);
@@ -230,18 +253,13 @@ const EditPage = observer(() => {
 
                         <div className={styles.buttonManager}>
                             <Button
-                                text={"Отмена"}
+                                text={'Отмена'}
                                 isAccent={false}
                                 isSubmit={false}
                                 onClick={onClose}
                             />
-                            <Button
-                                text={"Сохранить"}
-                                isSubmit
-                                isAccent
-                            />
+                            <Button text={'Сохранить'} isSubmit isAccent />
                         </div>
-
                     </form>
                 </div>
             </section>
