@@ -1,4 +1,4 @@
-import {useForm} from "react-hook-form";
+import {useForm, useWatch} from "react-hook-form";
 import featureFlagStore from "../../stores/FeatureFlagStore.ts";
 import styles from "../Page.module.scss";
 import Input from "../../components/Input/Input.tsx";
@@ -9,9 +9,10 @@ import {FlagEnvironment, FlagStatus} from "../../types/featureFlag.ts";
 import Button from "../../components/Button/Button.tsx";
 import {useNavigate, useParams} from "react-router-dom";
 import {observer} from "mobx-react-lite";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import ProductionWarning from "../../components/ProductionWarning/ProductionWarning.tsx";
 import InfoMessage from "../../components/InfoMessage/InfoMessage.tsx";
+import Modal from "../../components/Modal/Modal.tsx";
 
 interface FormData {
     name: string;
@@ -32,8 +33,16 @@ const statusVariants: {value: FlagStatus, label: string}[] = [
 ];
 
 const EditPage = observer(() => {
-    const {register, handleSubmit, reset, formState: {errors}} = useForm<FormData>();
+    const {register, handleSubmit, reset, setValue, control, formState: {errors}} = useForm<FormData>();
     const navigate = useNavigate();
+
+    const status = useWatch({
+        control,
+        name: "status"
+    });
+
+    const [pendingStatus, setPendingStatus] = useState<FlagStatus | null>(null);
+    const [modalOpen, setModalOpen] = useState(false);
 
     const {id} = useParams();
     const currentFlag = featureFlagStore.currentFlag;
@@ -54,6 +63,19 @@ const EditPage = observer(() => {
             });
         }
     }, [currentFlag, reset]);
+
+    const onCancel = () => {
+        setPendingStatus(null);
+        setModalOpen(false);
+    }
+
+    const onConfirm = () => {
+        if (pendingStatus) {
+            setValue("status", pendingStatus);
+        }
+
+        onCancel();
+    }
 
     if (!id) {
         return <InfoMessage message={"Не удалось подключиться к флагу, попробуйте позже!"} status={"error"}
@@ -85,118 +107,137 @@ const EditPage = observer(() => {
     };
 
     return (
-        <section className={styles.section}>
-            {featureFlagStore.error && (
-                <InfoMessage message={featureFlagStore.error}
-                             status={"error"}
-                             onClose={() => {featureFlagStore.setErrorNull()}}/>
-            )}
+        <>
 
-            {featureFlagStore.isLoading && (
-                <InfoMessage message={"Загрузка, пожалуйста подождите..."} status={"loading"}/>
-            )}
-            <div className={styles.title}>Редактирование feature flag</div>
-            <div className={styles.subtitle}>Изменение параметров флага флага</div>
-            {currentFlag.environment === "production" && <ProductionWarning/>}
-            <div className={styles.formContainer}>
-                <form onSubmit={handleSubmit(onSubmit)}>
+            {modalOpen && (
+                <Modal
+                    title={"Подтверждение действия"}
+                    infoText={<>Вы действительно хотите
+                        {currentFlag.status === "enabled" ? " Выключить " : " Включить "}
+                        флаг <strong>{currentFlag.name}</strong>?</>}
+                    onClose={onCancel}
+                    onConfirm={onConfirm}/>
+                )}
 
-                    <div className={styles.field}>
-                        <label htmlFor={"name"}>Название (должно быть уникальным)</label>
-                        <Input
-                            id={"name"}
-                            typeInput={"text"}
-                            {...register("name", {
-                                required: "Название обязательно!",
-                                minLength: {
-                                    value: 6,
-                                    message: "Минимум 6 символов"
-                                },
-                                maxLength: {
-                                    value: 20,
-                                    message: "Максимум 20 символов"
-                                }
-                            })}
-                        />
-                        {errors.name && (
-                            <div className={styles.errorText}>
-                                <AlertCircle />
-                                {errors.name.message}
-                            </div>
-                        )}
-                    </div>
+            <section className={styles.section}>
+                {featureFlagStore.error && (
+                    <InfoMessage message={featureFlagStore.error}
+                                 status={"error"}
+                                 onClose={() => {featureFlagStore.setErrorNull()}}/>
+                )}
 
-                    <div className={styles.field}>
-                        <label htmlFor={"description"}>Описание</label>
-                        <Textarea
-                            id={"description"}
-                            rows={4}
-                            {...register("description", {
-                                required: "Описание обязательно!",
-                                minLength: {
-                                    value: 6,
-                                    message: "Минимум 6 символов"
-                                }
-                            })}
-                        />
-                        {errors.description && (
-                            <div className={styles.errorText}>
-                                <AlertCircle />
-                                {errors.description.message}
-                            </div>
-                        )}
-                    </div>
+                {featureFlagStore.isLoading && (
+                    <InfoMessage message={"Загрузка, пожалуйста подождите..."} status={"loading"}/>
+                )}
+                <div className={styles.title}>Редактирование feature flag</div>
+                <div className={styles.subtitle}>Изменение параметров флага флага</div>
+                {currentFlag.environment === "production" && <ProductionWarning/>}
+                <div className={styles.formContainer}>
+                    <form onSubmit={handleSubmit(onSubmit)}>
 
-                    <div className={styles.field}>
-                        <label htmlFor={"env"}>Окружение</label>
-                        <Select
-                            id="env"
-                            options={envVariants}
-                            {...register("environment")}
-                        />
+                        <div className={styles.field}>
+                            <label htmlFor={"name"}>Название (должно быть уникальным)</label>
+                            <Input
+                                id={"name"}
+                                typeInput={"text"}
+                                {...register("name", {
+                                    required: "Название обязательно!",
+                                    minLength: {
+                                        value: 6,
+                                        message: "Минимум 6 символов"
+                                    },
+                                    maxLength: {
+                                        value: 20,
+                                        message: "Максимум 20 символов"
+                                    }
+                                })}
+                            />
+                            {errors.name && (
+                                <div className={styles.errorText}>
+                                    <AlertCircle />
+                                    {errors.name.message}
+                                </div>
+                            )}
+                        </div>
 
-                        {errors.environment && (
-                            <div className={styles.errorText}>
-                                <AlertCircle />
-                                {errors.environment.message}
-                            </div>
-                        )}
-                    </div>
+                        <div className={styles.field}>
+                            <label htmlFor={"description"}>Описание</label>
+                            <Textarea
+                                id={"description"}
+                                rows={4}
+                                {...register("description", {
+                                    required: "Описание обязательно!",
+                                    minLength: {
+                                        value: 6,
+                                        message: "Минимум 6 символов"
+                                    }
+                                })}
+                            />
+                            {errors.description && (
+                                <div className={styles.errorText}>
+                                    <AlertCircle />
+                                    {errors.description.message}
+                                </div>
+                            )}
+                        </div>
 
-                    <div className={styles.field}>
-                        <label htmlFor={"status"}>Статус</label>
+                        <div className={styles.field}>
+                            <label htmlFor={"env"}>Окружение</label>
+                            <Select
+                                id="env"
+                                options={envVariants}
+                                {...register("environment")}
+                            />
 
-                        <Select
-                            id="status"
-                            options={statusVariants}
-                            {...register("status")}
-                        />
+                            {errors.environment && (
+                                <div className={styles.errorText}>
+                                    <AlertCircle />
+                                    {errors.environment.message}
+                                </div>
+                            )}
+                        </div>
 
-                        {errors.status && (
-                            <div className={styles.errorText}>
-                                <AlertCircle />
-                                {errors.status.message}
-                            </div>
-                        )}
-                    </div>
+                        <div className={styles.field}>
+                            <label htmlFor={"status"}>Статус</label>
 
-                    <div className={styles.buttonManager}>
-                        <Button
-                            text={"Отмена"}
-                            isAccent={false}
-                            isSubmit={false}
-                            onClick={onClose}
-                        />
-                        <Button
-                            text={"Сохранить"}
-                            isSubmit
-                            isAccent
-                        />
-                    </div>
+                            <Select
+                                id="status"
+                                options={statusVariants}
+                                value={status}
+                                onChange = {(e) => {
+                                    const nextValue = e.target.value as FlagStatus;
 
-                </form>
-            </div>
-        </section>
+                                    setPendingStatus(nextValue);
+                                    setModalOpen(true);
+                                }}
+                            />
+
+                            {errors.status && (
+                                <div className={styles.errorText}>
+                                    <AlertCircle />
+                                    {errors.status.message}
+                                </div>
+                            )}
+                        </div>
+
+                        <div className={styles.buttonManager}>
+                            <Button
+                                text={"Отмена"}
+                                isAccent={false}
+                                isSubmit={false}
+                                onClick={onClose}
+                            />
+                            <Button
+                                text={"Сохранить"}
+                                isSubmit
+                                isAccent
+                            />
+                        </div>
+
+                    </form>
+                </div>
+            </section>
+        </>
     );
 });
 
