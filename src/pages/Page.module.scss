@@ -46,14 +46,41 @@
 }
 
 .buttonManager {
-  margin-top: 15px;
   padding-top: 15px;
+  width: 90%;
+  margin: 15px auto;
   border-top: 1px solid color-mix(
           in srgb,
           var(--color-text-secondary) 40%,
           transparent
   );
 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+    width: 60%;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    background: var(--color-warning-bg);
+    text-align: center;
+    border-radius: 20px;
+    padding: 15px;
+
+    svg {
+      width: 20px;
+      height: auto;
+      color: var(--color-warning);
+    }
+  }
+}
+
+.buttons {
   display: flex;
   justify-content: flex-end;
   gap: 25px;

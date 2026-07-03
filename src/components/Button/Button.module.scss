@@ -26,3 +26,22 @@
   border: 2px solid var(--color-accent-hover);
   color: var(--color-bg-card);
 }
+
+.Button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+  background-color: var(--color-bg-page);
+  border: 1px solid var(--color-text-light);
+  color: var(--color-text-light);
+}
+
+.Button:disabled:hover {
+  transform: none;
+}
+
+.accent:disabled {
+  background-color: var(--color-text-light);
+  border: 2px solid var(--color-text-light);
+  color: var(--color-bg-card);
+  opacity: 0.6;
+}
