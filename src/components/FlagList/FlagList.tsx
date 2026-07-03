@@ -60,7 +60,7 @@ const FlagList = ({flag}: FlagCardProps) => {
             <div className={styles.cardRow}>
                 <dt>Дата создания</dt>
                 <dd>
-                    <span>{data.createdAt}</span>
+                    <span>{new Date(data.createdAt).toLocaleString()}</span>
                     <span>{data.createdBy}</span>
                 </dd>
             </div>
@@ -68,8 +68,9 @@ const FlagList = ({flag}: FlagCardProps) => {
             <div className={styles.cardRow}>
                 <dt>Последнее изменение</dt>
                 <dd>
-                    <span>{data.updatedAt}</span>
-                    <span>{data.updatedBy}</span>
+                    <span>{data.updatedAt ?
+                        new Date(data.createdAt).toLocaleString() : "Изменений не было."}</span>
+                    <span>{data.updatedBy ? data.updatedBy : ""}</span>
                 </dd>
             </div>
 
