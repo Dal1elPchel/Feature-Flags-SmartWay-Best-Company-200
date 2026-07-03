@@ -82,7 +82,7 @@ const LoginPage = observer(() => {
                         </div>
                         {errors.password && <div className={styles.errorText}><AlertCircle/>{errors.password.message}</div>}
 
-                        <Button text={"Войти"} isAccent={true} isSubmit={true}/>
+                        <Button text={"Войти"} isAccent isSubmit/>
                     </form>
                 </div>
             </div>

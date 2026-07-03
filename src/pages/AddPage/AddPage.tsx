@@ -157,8 +157,8 @@ const AddPage = observer(() => {
                         />
                         <Button
                             text={"Подтвердить"}
-                            isSubmit={true}
-                            isAccent={true}
+                            isSubmit
+                            isAccent
                         />
                     </div>
 

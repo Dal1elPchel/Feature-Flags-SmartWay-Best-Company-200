@@ -189,8 +189,8 @@ const EditPage = observer(() => {
                         />
                         <Button
                             text={"Сохранить"}
-                            isSubmit={true}
-                            isAccent={true}
+                            isSubmit
+                            isAccent
                         />
                     </div>
 

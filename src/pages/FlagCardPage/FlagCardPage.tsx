@@ -84,7 +84,7 @@ const FlagCardPage = observer(() => {
                         <Button
                             text={currentFlag.status === "enabled" ? "Выключить" : "Включить"}
                             isSubmit={false}
-                            isAccent={true}
+                            isAccent
                             onClick={() => {setIsModalOpen(true)}}
                             isDisabled={!canUserEdit}
                         />

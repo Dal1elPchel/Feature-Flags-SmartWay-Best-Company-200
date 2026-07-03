@@ -63,7 +63,7 @@ const Filters = ({ onLoad,
             <div className={styles.button}>
                 <Button text={"Сбросить фильтры"} isAccent={false} isSubmit={false}
                         onClick={() => reset()}/>
-                <Button text={"Создать флаг"} isAccent={true} isSubmit={false}
+                <Button text={"Создать флаг"} isAccent isSubmit={false}
                         onClick={onCreate}/>
             </div>
         </section>

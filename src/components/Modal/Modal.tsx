@@ -35,7 +35,7 @@ const Modal = ({title, infoText, optionText, onClose, onConfirm}: ModalProps) =>
                     <Button text={<>
                         <PowerIcon/>
                         Подтвердить
-                    </>} isSubmit={false} isAccent={true}
+                    </>} isSubmit={false} isAccent
                     onClick={onConfirm}/>
                 </div>
             </div>
