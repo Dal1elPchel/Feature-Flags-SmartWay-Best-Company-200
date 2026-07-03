@@ -149,6 +149,10 @@ const EditPage = observer(() => {
                                     maxLength: {
                                         value: 20,
                                         message: "Максимум 20 символов"
+                                    },
+                                    pattern: {
+                                        value: /^[A-Za-z_]+$/,
+                                        message: "Допустимы только английские буквы и символ '_'"
                                     }
                                 })}
                             />
@@ -170,6 +174,10 @@ const EditPage = observer(() => {
                                     minLength: {
                                         value: 6,
                                         message: "Минимум 6 символов"
+                                    },
+                                    maxLength: {
+                                        value: 300,
+                                        message: "Максимум 300 символов"
                                     }
                                 })}
                             />
