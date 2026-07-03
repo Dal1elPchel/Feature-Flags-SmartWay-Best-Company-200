@@ -69,7 +69,7 @@ const FlagList = ({flag}: FlagCardProps) => {
                 <dt>Последнее изменение</dt>
                 <dd>
                     <span>{data.updatedAt ?
-                        new Date(data.createdAt).toLocaleString() : "Изменений не было."}</span>
+                        new Date(data.updatedAt).toLocaleString() : "Изменений не было."}</span>
                     <span>{data.updatedBy ? data.updatedBy : ""}</span>
                 </dd>
             </div>
