@@ -60,35 +60,7 @@ export class APIClient {
             }
         }
 
-        const data = await response.json();
-
-        const flags: FeatureFlag[] = data.map(
-            (item: {
-                id: string;
-                name: string;
-                description: string;
-                environment: string;
-                status: string;
-                owner: string;
-                createdBy: string;
-                createdAt: string;
-                updatedBy: string;
-                updatedAt: string;
-            }) => ({
-                id: item.id,
-                name: item.name,
-                description: item.description,
-                environment: item.environment,
-                status: item.status,
-                owner: item.owner,
-                createdBy: item.createdBy,
-                createdAt: item.createdAt,
-                updatedBy: item.updatedBy,
-                updatedAt: item.updatedAt,
-            }),
-        );
-
-        return flags;
+        return (await response.json()) as FeatureFlag[];
     }
 
     static async getFlagById(id: string): Promise<FeatureFlag> {
@@ -120,23 +92,8 @@ export class APIClient {
                     throw new Error(`Ошибка ${response.status}`);
             }
         }
-        const data = await response.json();
 
-        const flag: FeatureFlag = {
-            id: data.id,
-            name: data.name,
-            description: data.description,
-            environment: data.environment,
-            status: data.status,
-            owner: data.owner,
-            createdBy: data.createdBy,
-            createdAt: data.createdAt,
-            updatedBy: data.updatedBy,
-            updatedAt: data.updatedAt,
-            commandId: data.owner_team_id,
-        };
-
-        return flag;
+        return (await response.json()) as FeatureFlag;
     }
 
     static async createNewFlag(newFlag: {
@@ -324,16 +281,6 @@ export class APIClient {
             }
         }
 
-        const data = await response.json();
-
-        const authUser: User = {
-            id: data.id,
-            name: data.name,
-            email: data.email,
-            surname: data.surname,
-            commandId: data.teamId,
-        };
-
-        return authUser;
+        return (await response.json()) as User;
     }
 }
