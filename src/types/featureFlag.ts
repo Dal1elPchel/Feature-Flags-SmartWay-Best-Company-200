@@ -5,12 +5,12 @@ export interface FeatureFlag {
     id: string;
     name: string;
     description: string;
-    environment: FlagEnvironment;
     status: FlagStatus;
+    environment: FlagEnvironment;
+    owner_team_id?: string;
     owner: string;
     createdBy: string;
     createdAt: string;
     updatedBy: string;
     updatedAt: string;
-    commandId?: string;
 }
