@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import Input from '../../UI/Input/Input.tsx';
 import Select from '../../UI/Select/Select.tsx';
 import { useForm, useWatch } from 'react-hook-form';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface FormData {
     search?: string;
@@ -43,6 +43,16 @@ const Filters = ({ onLoad, environmentOptions, statusOptions }: FilterProps) => 
         navigate('/add');
     };
 
+    const newEnvOptions = useMemo(
+        () => [{ value: '', label: 'Нет' }, ...environmentOptions],
+        [environmentOptions],
+    );
+
+    const newStatusOptions = useMemo(
+        () => [{ value: '', label: 'Нет' }, ...statusOptions],
+        [statusOptions],
+    );
+
     return (
         <section className={styles.card}>
             <form className={styles.filtersManager} onSubmit={(e) => e.preventDefault()}>
@@ -52,11 +62,11 @@ const Filters = ({ onLoad, environmentOptions, statusOptions }: FilterProps) => 
                     {...register('search')}
                 />
                 <Select
-                    options={environmentOptions}
+                    options={newEnvOptions}
                     {...register('environment')}
                     placeholder={'Окружение'}
                 />
-                <Select options={statusOptions} {...register('status')} placeholder={'Статус'} />
+                <Select options={newStatusOptions} {...register('status')} placeholder={'Статус'} />
 
                 <label htmlFor="team" className={styles.checkboxLabel}>
                     <Input id="team" typeInput="checkbox" {...register('team')} />
