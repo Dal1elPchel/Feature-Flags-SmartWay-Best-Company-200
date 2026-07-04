@@ -1,8 +1,8 @@
 import styles from './Filters.module.scss';
-import Button from '../Button/Button.tsx';
+import Button from '../../UI/Button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
-import Input from '../Input/Input.tsx';
-import Select from '../Select/Select.tsx';
+import Input from '../../UI/Input/Input.tsx';
+import Select from '../../UI/Select/Select.tsx';
 import { useForm, useWatch } from 'react-hook-form';
 import { useEffect, useState } from 'react';
 

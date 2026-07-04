@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import styles from './Header.module.scss';
 import { ChevronDown, ChevronUp } from 'lucide-react';
 import { useState } from 'react';
-import Button from '../../components/Button/Button.tsx';
+import Button from '../../components/UI/Button/Button.tsx';
 import userStore from '../../stores/UserStore.ts';
 
 const Header = observer(() => {

@@ -2,7 +2,7 @@ import userStore from '../stores/UserStore.ts';
 import { observer } from 'mobx-react-lite';
 import { Navigate } from 'react-router-dom';
 import { Outlet } from 'react-router-dom';
-import InfoMessage from '../components/InfoMessage/InfoMessage.tsx';
+import InfoMessage from '../components/UI/InfoMessage/InfoMessage.tsx';
 
 const PrivateRoute = observer(() => {
     if (!userStore.isInitialized) {

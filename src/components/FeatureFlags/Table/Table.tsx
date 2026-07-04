@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import styles from './Table.module.scss';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import InfoMessage from '../InfoMessage/InfoMessage.tsx';
+import InfoMessage from '../../UI/InfoMessage/InfoMessage.tsx';
 
 interface Column<T> {
     key: keyof T | string;

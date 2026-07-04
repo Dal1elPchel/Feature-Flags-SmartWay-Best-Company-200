@@ -1,14 +1,14 @@
 import { useForm } from 'react-hook-form';
 import featureFlagStore from '../../stores/FeatureFlagStore.ts';
 import styles from '../Page.module.scss';
-import Input from '../../components/Input/Input.tsx';
+import Input from '../../components/UI/Input/Input.tsx';
 import { AlertCircle } from 'lucide-react';
-import Textarea from '../../components/Texarea/Textarea.tsx';
-import Select from '../../components/Select/Select.tsx';
+import Textarea from '../../components/UI/Texarea/Textarea.tsx';
+import Select from '../../components/UI/Select/Select.tsx';
 import { FlagEnvironment, FlagStatus } from '../../types/featureFlag.ts';
-import Button from '../../components/Button/Button.tsx';
+import Button from '../../components/UI/Button/Button.tsx';
 import { useNavigate } from 'react-router-dom';
-import InfoMessage from '../../components/InfoMessage/InfoMessage.tsx';
+import InfoMessage from '../../components/UI/InfoMessage/InfoMessage.tsx';
 import { observer } from 'mobx-react-lite';
 
 interface FormData {

@@ -1,21 +1,21 @@
 import styles from '../Page.module.scss';
-import {useNavigate, useParams} from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import featureFlagStore from '../../stores/FeatureFlagStore.ts';
-import {ArrowLeft, AlertTriangleIcon} from 'lucide-react';
-import FlagList from '../../components/FlagList/FlagList.tsx';
-import Button from '../../components/Button/Button.tsx';
-import {useEffect, useState} from 'react';
-import {observer} from 'mobx-react-lite';
-import ProductionWarning from '../../components/ProductionWarning/ProductionWarning.tsx';
-import Modal from '../../components/Modal/Modal.tsx';
-import InfoMessage from '../../components/InfoMessage/InfoMessage.tsx';
+import { ArrowLeft, AlertTriangleIcon } from 'lucide-react';
+import FlagList from '../../components/FeatureFlags/FlagList/FlagList.tsx';
+import Button from '../../components/UI/Button/Button.tsx';
+import { useEffect, useState } from 'react';
+import { observer } from 'mobx-react-lite';
+import ProductionWarning from '../../components/FeatureFlags/ProductionWarning/ProductionWarning.tsx';
+import Modal from '../../components/UI/Modal/Modal.tsx';
+import InfoMessage from '../../components/UI/InfoMessage/InfoMessage.tsx';
 import userStore from '../../stores/UserStore.ts';
-import {useLocation} from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 const FlagCardPage = observer(() => {
     const navigate = useNavigate();
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const {id} = useParams();
+    const { id } = useParams();
     const location = useLocation();
     const [showSuccess, setShowSuccess] = useState(location.state?.created ?? false);
 
@@ -64,7 +64,7 @@ const FlagCardPage = observer(() => {
     return (
         <>
             <section className={styles.section}>
-                {showSuccess && <InfoMessage message="Флаг успешно создан!" status="success"/>}
+                {showSuccess && <InfoMessage message="Флаг успешно создан!" status="success" />}
 
                 {featureFlagStore.error && (
                     <InfoMessage
@@ -77,7 +77,7 @@ const FlagCardPage = observer(() => {
                 )}
 
                 {featureFlagStore.isLoading && (
-                    <InfoMessage message={'Загрузка, пожалуйста подождите...'} status={'loading'}/>
+                    <InfoMessage message={'Загрузка, пожалуйста подождите...'} status={'loading'} />
                 )}
                 <div className={styles.title}>Карточка</div>
                 <div className={styles.subtitle}>
@@ -87,19 +87,19 @@ const FlagCardPage = observer(() => {
                             navigate('/');
                         }}
                     >
-                        <ArrowLeft/> Назад к списку флагов
+                        <ArrowLeft /> Назад к списку флагов
                     </button>
                 </div>
 
-                {currentFlag.environment === 'production' && <ProductionWarning/>}
+                {currentFlag.environment === 'production' && <ProductionWarning />}
                 <div className={styles.formContainer}>
                     <h1 className={styles.containerTitle}>{currentFlag.name}</h1>
-                    <FlagList flag={currentFlag}/>
+                    <FlagList flag={currentFlag} />
                     <div className={styles.buttonManager}>
                         {!canUserEdit && (
                             <span>
                                 {' '}
-                                <AlertTriangleIcon/> Вы не можете редактировать флаг, который
+                                <AlertTriangleIcon /> Вы не можете редактировать флаг, который
                                 принадлежит другой команде!
                             </span>
                         )}

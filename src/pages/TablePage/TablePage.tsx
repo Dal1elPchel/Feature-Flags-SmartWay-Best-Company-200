@@ -1,14 +1,14 @@
-import Badge from '../../components/Badge/Badge.tsx';
+import Badge from '../../components/FeatureFlags/Badge/Badge.tsx';
 import { FeatureFlag, FlagEnvironment, FlagStatus } from '../../types/featureFlag.ts';
-import Button from '../../components/Button/Button.tsx';
-import Table from '../../components/Table/Table.tsx';
+import Button from '../../components/UI/Button/Button.tsx';
+import Table from '../../components/FeatureFlags/Table/Table.tsx';
 import styles from '../Page.module.scss';
 import { observer } from 'mobx-react-lite';
 import featureFlagStore from '../../stores/FeatureFlagStore.ts';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import InfoMessage from '../../components/InfoMessage/InfoMessage.tsx';
-import Filters from '../../components/Filters/Filters.tsx';
+import InfoMessage from '../../components/UI/InfoMessage/InfoMessage.tsx';
+import Filters from '../../components/FeatureFlags/Filters/Filters.tsx';
 
 const TablePage = observer(() => {
     const navigate = useNavigate();

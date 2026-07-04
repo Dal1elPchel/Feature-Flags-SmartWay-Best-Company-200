@@ -1,12 +1,12 @@
 import styles from './LoginPage.module.scss';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import userStore from '../../stores/UserStore.ts';
-import {useForm} from 'react-hook-form';
-import Input from '../../components/Input/Input.tsx';
-import Button from '../../components/Button/Button.tsx';
-import {AlertCircle} from 'lucide-react';
-import {useNavigate} from 'react-router-dom';
-import InfoMessage from '../../components/InfoMessage/InfoMessage.tsx';
+import { useForm } from 'react-hook-form';
+import Input from '../../components/UI/Input/Input.tsx';
+import Button from '../../components/UI/Button/Button.tsx';
+import { AlertCircle } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import InfoMessage from '../../components/UI/InfoMessage/InfoMessage.tsx';
 
 interface FormData {
     email: string;
@@ -17,7 +17,7 @@ const LoginPage = observer(() => {
     const {
         register,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
     } = useForm<FormData>();
     const navigate = useNavigate();
 
@@ -72,7 +72,7 @@ const LoginPage = observer(() => {
                         </div>
                         {errors.email && (
                             <div className={styles.errorText}>
-                                <AlertCircle/>
+                                <AlertCircle />
                                 {errors.email.message}
                             </div>
                         )}
@@ -99,12 +99,12 @@ const LoginPage = observer(() => {
                         </div>
                         {errors.password && (
                             <div className={styles.errorText}>
-                                <AlertCircle/>
+                                <AlertCircle />
                                 {errors.password.message}
                             </div>
                         )}
 
-                        <Button text={'Войти'} isAccent isSubmit/>
+                        <Button text={'Войти'} isAccent isSubmit />
                     </form>
                 </div>
             </div>

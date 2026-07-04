@@ -1,4 +1,4 @@
-import { FeatureFlag } from '../../types/featureFlag.ts';
+import { FeatureFlag } from '../../../types/featureFlag.ts';
 import styles from './FlagList.module.scss';
 import Badge from '../Badge/Badge.tsx';
 import { Copy } from 'lucide-react';
