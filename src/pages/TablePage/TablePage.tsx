@@ -9,6 +9,7 @@ import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InfoMessage from '../../components/UI/InfoMessage/InfoMessage.tsx';
 import Filters from '../../components/FeatureFlags/Filters/Filters.tsx';
+import userStore from '../../stores/UserStore.ts';
 
 const TablePage = observer(() => {
     const navigate = useNavigate();
@@ -81,11 +82,12 @@ const TablePage = observer(() => {
     }, []);
 
     const onFiltersChange = useCallback(
-        (data: { search?: string; environment?: string; status?: string }) => {
+        (data: { search?: string; environment?: string; status?: string; team?: boolean }) => {
             featureFlagStore.loadFlags({
                 search: data.search || undefined,
                 environment: data.environment || undefined,
                 status: data.status || undefined,
+                team: (data.team ? userStore.currentUser?.teamId : '') || undefined,
             });
         },
         [],

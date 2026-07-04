@@ -1,7 +1,7 @@
 import styles from './Input.module.scss';
 import { InputHTMLAttributes, forwardRef } from 'react';
 
-type InputType = 'text' | 'password';
+type InputType = 'text' | 'password' | 'checkbox';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
     typeInput: InputType;

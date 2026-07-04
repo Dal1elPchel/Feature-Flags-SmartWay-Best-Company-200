@@ -1,4 +1,6 @@
 .inputElem {
+
+  &:not([type=checkbox]) {
     width: 100%;
     border: 1px solid var(--color-text-light);
     border-radius: 15px;
@@ -6,7 +8,50 @@
     color: var(--color-text-primary);
 
     &:focus {
-        outline: none;
-        border-color: var(--color-accent);
+      outline: none;
+      border-color: var(--color-accent);
     }
+  }
+
+  &[type='checkbox'] {
+    appearance: none;
+    -webkit-appearance: none;
+    margin: 0;
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    border: 1px solid var(--color-text-light);
+    border-radius: 4px;
+    cursor: pointer;
+    position: relative;
+    background: transparent;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+
+    &:checked {
+      background-color: var(--color-accent);
+      border-color: var(--color-accent);
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: 6px;
+        top: 2px;
+        width: 5px;
+        height: 12px;
+        border: solid var(--color-bg-card);
+        border-width: 0 3px 3px 0;
+        transform: rotate(45deg);
+      }
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 2px var(--color-accent-light, rgba(0, 0, 0, 0.15));
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+  }
 }

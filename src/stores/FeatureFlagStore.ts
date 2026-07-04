@@ -21,7 +21,12 @@ class FeatureFlagStore {
         this.isLoading = false;
     }
 
-    async loadFlags(optionalData?: { search?: string; environment?: string; status?: string }) {
+    async loadFlags(optionalData?: {
+        search?: string;
+        environment?: string;
+        status?: string;
+        team?: string;
+    }) {
         this.startLoading();
 
         try {

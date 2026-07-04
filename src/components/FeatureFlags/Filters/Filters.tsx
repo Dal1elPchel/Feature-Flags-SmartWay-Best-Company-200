@@ -10,6 +10,7 @@ interface FormData {
     search?: string;
     environment?: string;
     status?: string;
+    team?: boolean;
 }
 
 interface FilterProps {
@@ -22,7 +23,7 @@ const Filters = ({ onLoad, environmentOptions, statusOptions }: FilterProps) => 
     const navigate = useNavigate();
 
     const { register, control, reset } = useForm<FormData>({
-        defaultValues: { search: '', environment: '', status: '' },
+        defaultValues: { search: '', environment: '', status: '', team: false },
     });
 
     const values = useWatch({ control });
@@ -56,6 +57,11 @@ const Filters = ({ onLoad, environmentOptions, statusOptions }: FilterProps) => 
                     placeholder={'Окружение'}
                 />
                 <Select options={statusOptions} {...register('status')} placeholder={'Статус'} />
+
+                <label htmlFor="team" className={styles.checkboxLabel}>
+                    <Input id="team" typeInput="checkbox" {...register('team')} />
+                    Показать флаги моей команды
+                </label>
             </form>
 
             <div className={styles.button}>

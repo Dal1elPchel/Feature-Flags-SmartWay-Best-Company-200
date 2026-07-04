@@ -16,6 +16,7 @@ export class APIClient {
         search?: string;
         environment?: string;
         status?: string;
+        team?: string;
     }): Promise<FeatureFlag[]> {
         const params = new URLSearchParams();
 
@@ -29,6 +30,10 @@ export class APIClient {
 
         if (optionalData?.status) {
             params.append('status', optionalData.status);
+        }
+
+        if (optionalData?.team) {
+            params.append('teamId', optionalData.team);
         }
 
         const response = await fetch(`${this.baseURL}/flags?${params.toString()}`, {
