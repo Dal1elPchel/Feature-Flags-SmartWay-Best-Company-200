@@ -5,7 +5,7 @@ import Table from '../../components/FeatureFlags/Table/Table.tsx';
 import styles from '../Page.module.scss';
 import { observer } from 'mobx-react-lite';
 import featureFlagStore from '../../stores/FeatureFlagStore.ts';
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import InfoMessage from '../../components/UI/InfoMessage/InfoMessage.tsx';
 import Filters from '../../components/FeatureFlags/Filters/Filters.tsx';
@@ -80,13 +80,16 @@ const TablePage = observer(() => {
         featureFlagStore.loadFlags();
     }, []);
 
-    const onFiltersChange = (data: { search?: string; environment?: string; status?: string }) => {
-        featureFlagStore.loadFlags({
-            search: data.search || undefined,
-            environment: data.environment || undefined,
-            status: data.status || undefined,
-        });
-    };
+    const onFiltersChange = useCallback(
+        (data: { search?: string; environment?: string; status?: string }) => {
+            featureFlagStore.loadFlags({
+                search: data.search || undefined,
+                environment: data.environment || undefined,
+                status: data.status || undefined,
+            });
+        },
+        [],
+    );
 
     const flags = featureFlagStore.flags;
     return (
