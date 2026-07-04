@@ -59,7 +59,7 @@ const FlagCardPage = observer(() => {
         navigate(`/flags/${currentFlag.id}/edit`);
     };
 
-    const canUserEdit = userStore.currentUser?.commandId === currentFlag.commandId;
+    const canUserEdit = userStore.currentUser?.teamId === currentFlag.owner_team_id;
 
     return (
         <>
