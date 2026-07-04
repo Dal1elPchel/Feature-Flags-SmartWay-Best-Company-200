@@ -2,21 +2,22 @@ import { useMemo, useState } from 'react';
 import styles from './Table.module.scss';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import InfoMessage from '../../UI/InfoMessage/InfoMessage.tsx';
+import { FeatureFlag } from '../../../types/featureFlag.ts';
 
-interface Column<T> {
-    key: keyof T | string;
+interface Column {
+    key: keyof FeatureFlag | string;
     title: string;
     width?: string;
-    render?: (row: T) => React.ReactNode;
+    render?: (row: FeatureFlag) => React.ReactNode;
 }
 
-interface TableProps<T> {
-    data: T[];
-    columns: Column<T>[];
+interface TableProps {
+    data: FeatureFlag[];
+    columns: Column[];
     pageSize?: number;
 }
 
-function Table<T>({ data, columns, pageSize = 6 }: TableProps<T>) {
+const Table = ({ data, columns, pageSize = 6 }: TableProps) => {
     const [page, setPage] = useState(1);
 
     const currentData = useMemo(() => {
@@ -56,7 +57,7 @@ function Table<T>({ data, columns, pageSize = 6 }: TableProps<T>) {
                                 <td key={String(column.key)}>
                                     {column.render
                                         ? column.render(row)
-                                        : String(row[column.key as keyof T])}
+                                        : String(row[column.key as keyof FeatureFlag])}
                                 </td>
                             ))}
                         </tr>
@@ -91,6 +92,6 @@ function Table<T>({ data, columns, pageSize = 6 }: TableProps<T>) {
             </div>
         </div>
     );
-}
+};
 
 export default Table;
