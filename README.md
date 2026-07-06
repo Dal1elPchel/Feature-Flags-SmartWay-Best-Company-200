@@ -1,16 +1,111 @@
-# React + Vite
+# Feature Flags — SmartWay
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Веб-приложение для управления feature-флагами внутри команды: создание, просмотр, редактирование, включение/выключение флагов по окружениям (dev / staging / production), с разграничением доступа по командам.
 
-Currently, two official plugins are available:
+## Стек технологий
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- **React 19 + TypeScript** — типизация компонентов и API-контрактов, меньше ошибок на этапе выполнения
+- **Vite** — сборка и dev-сервер
+- **React Router** — маршрутизация, включая защищённые роуты
+- **MobX** (`mobx`, `mobx-react-lite`) — реактивное управление состоянием приложения через сторы
+- **React Hook Form** — управление состоянием и валидацией форм
+- **SCSS Modules** — изолированная стилизация компонентов
+- **ESLint + Prettier** — единый стиль кода в проекте
+- **lucide-react** — иконки
 
-## React Compiler
+## Возможности
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Авторизация пользователя (email + пароль)
+- Просмотр списка флагов с фильтрацией (поиск, окружение, статус, команда)
+- Карточка отдельного флага с подробной информацией
+- Создание нового флага
+- Редактирование существующего флага
+- Включение / выключение флага с подтверждением через модальное окно
+- Предупреждение при работе с флагами в **production**-окружении
+- Разграничение прав: редактировать флаг может только та команда, которой он принадлежит
+- Защищённые маршруты — доступ к приложению только после авторизации
 
-## Expanding the Oxlint configuration
+## Структура проекта
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+```
+src/
+├── api/
+│   └── APIClient.ts          # Единая точка обращения к backend API
+├── Routes/
+│   └── PrivateRoute.tsx      # Обёртка для защищённых маршрутов
+├── stores/
+│   ├── UserStore.ts           # Состояние авторизации и текущего пользователя
+│   └── FeatureFlagStore.ts    # Состояние флагов: загрузка, создание, обновление
+├── pages/
+│   ├── LoginPage/              # Страница входа
+│   ├── TablePage/              # Таблица всех флагов
+│   ├── FlagCardPage/           # Карточка флага
+│   ├── AddPage/                 # Создание флага
+│   └── EditPage/                # Редактирование флага
+├── layouts/
+│   ├── MainLayout/              # Общий layout авторизованной части приложения
+│   ├── Header/                   # Верхняя панель
+│   └── Sidebar/                  # Боковое меню
+├── components/
+│   ├── FeatureFlags/             # Таблица, фильтры, бейджи, предупреждения — специфично для флагов
+│   └── UI/                        # Переиспользуемые UI-компоненты: Button, Input, Modal, Select, Textarea, InfoMessage
+├── types/
+│   ├── featureFlag.ts             # Типы флага, окружений, статусов
+│   └── user.ts                     # Тип пользователя
+├── App.tsx                          # Дерево маршрутов приложения
+└── main.tsx                          # Точка входа
+```
+
+## Архитектурные решения
+
+**Работа с API.** Все обращения к backend проходят через единый класс `APIClient` — каждый метод соответствует конкретному эндпоинту (`getFlags`, `createNewFlag`, `updateFlag`, `turnFlag`, `login`, `getMe` и т.д.). Ошибки сервера обрабатываются по кодам статуса и превращаются в понятные пользователю сообщения на русском языке.
+
+**Состояние приложения.** Вместо `useState`/`useEffect` в компонентах состояние вынесено в MobX-сторы:
+- `UserStore` — хранит текущего пользователя, статус авторизации, состояние восстановления сессии при загрузке приложения;
+- `FeatureFlagStore` — хранит список флагов, текущий выбранный флаг, состояния загрузки и ошибок.
+
+Компоненты оборачиваются в `observer` из `mobx-react-lite` и автоматически перерисовываются при изменении данных в сторе.
+
+**Защита маршрутов.** Компонент `PrivateRoute` проверяет состояние авторизации перед рендером защищённой части приложения:
+- пока сессия не восстановлена — показывается индикатор загрузки;
+- если пользователь не авторизован — редирект на `/login`;
+- если авторизован — рендерится вложенный маршрут через `<Outlet />`.
+
+**Формы.** Создание и редактирование флага реализованы через `react-hook-form`, что снимает необходимость руками управлять состоянием каждого поля и его валидацией.
+
+**Права доступа на уровне UI.** На карточке флага сравнивается `teamId` текущего пользователя с командой-владельцем флага — если они не совпадают, действия редактирования блокируются, а пользователю показывается предупреждение.
+
+## Установка и запуск
+
+```bash
+# установка зависимостей
+npm install
+
+# запуск дев-сервера
+npm run dev
+
+# сборка production-версии
+npm run build
+
+# предпросмотр собранной версии
+npm run preview
+```
+
+## Скрипты
+
+| Команда | Описание |
+|---|---|
+| `npm run dev` | Запуск дев-сервера Vite |
+| `npm run build` | Сборка production-версии |
+| `npm run preview` | Локальный предпросмотр собранной версии |
+| `npm run lint` | Проверка кода ESLint |
+| `npm run lint:fix` | Автоматическое исправление найденных проблем |
+| `npm run format` | Форматирование кода через Prettier |
+
+## Backend
+
+Приложение рассчитано на работу с отдельным backend API (адрес задаётся в `APIClient.baseURL`). Backend отвечает за:
+- авторизацию пользователей и выдачу токена доступа;
+- хранение и выдачу feature-флагов с фильтрацией по поиску, окружению, статусу и команде;
+- проверку прав на изменение флагов по принадлежности команде.
+
