@@ -1,7 +1,6 @@
 import { FeatureFlag } from '../../../types/featureFlag.ts';
 import styles from './FlagList.module.scss';
 import Badge from '../Badge/Badge.tsx';
-import { Copy } from 'lucide-react';
 
 interface FlagCardProps {
     flag: FeatureFlag;
@@ -20,20 +19,11 @@ const FlagList = ({ flag }: FlagCardProps) => {
         updatedAt: flag.updatedAt,
     };
 
-    const handleCopy = async () => {
-        await navigator.clipboard.writeText(data.name);
-    };
-
     return (
         <dl className={styles.flagCard}>
             <div className={styles.cardRow}>
                 <dt>Название</dt>
-                <dd>
-                    <span>{data.name}</span>
-                    <button onClick={handleCopy}>
-                        <Copy />
-                    </button>
-                </dd>
+                <dd>{data.name}</dd>
             </div>
 
             <div className={styles.cardRow}>
